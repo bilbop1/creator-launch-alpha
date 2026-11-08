@@ -1,0 +1,21 @@
+# Keep creator work and credentials local by default
+work/
+my-channel/
+.env
+.env.*
+!.env.example
+*.local.json
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+.venv/
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.webm
+*.png
+*.jpg
+*.jpeg
+*.zip

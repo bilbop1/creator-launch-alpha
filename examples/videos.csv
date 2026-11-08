@@ -1,0 +1,9 @@
+channel,video_id,title,url,views,published,observed,duration_seconds
+Example A,a01,The garden that changed overnight,https://example.com/a01,1200,2026-01-01,2026-04-01,50
+Example A,a02,A clock with one extra hour,https://example.com/a02,3000,2026-01-05,2026-04-01,52
+Example A,a03,The tiny library on the moon,https://example.com/a03,1800,2026-01-10,2026-04-01,45
+Example A,a04,The door that never opens,https://example.com/a04,2200,2026-01-15,2026-04-01,48
+Example A,a05,The quietest train station,https://example.com/a05,13000,2026-01-20,2026-04-01,55
+Example B,b01,A town where it rains soup,https://example.com/b01,250,2026-01-01,2026-04-01,40
+Example B,b02,The museum on the moon,https://example.com/b02,1000,2026-01-02,2026-04-01,42
+Example B,b03,One umbrella for everyone,https://example.com/b03,400,2026-01-03,2026-04-01,44
