@@ -55,13 +55,14 @@ Tell them in one line that you are researching now. Then do the whole research a
 1. From their answers, list 6 to 8 candidate niches. Drop any that need something they said they hate or more weekly time than they have.
 2. For each remaining niche find 5 to 10 competitor channels on the platform that fits (YouTube Shorts, long YouTube, TikTok or Instagram: take the platform from the research).
 3. Collect real videos per channel into `.scratch/videos.csv` (schema: `examples/videos.csv` in the seed). Record the observation date. Rank with `python -m launchkit rank` from the seed copy, or compute the same thing: views divided by that channel's own median.
-4. **Parity rule.** A format is proposed only if it is proven by outliers: at least 3 videos of that format, on at least 2 different channels, each with views at least 5x its own channel's median. Every proof is a real link, the views, the channel median and the ratio, with the date seen. No proof, no proposal. Never invent a number. Mark anything unchecked "not verified yet".
-5. Keep 2 or 3 survivors. Attack each the way a skeptical viewer would; drop what you cannot defend.
+4. **Parity rule.** A format is proposed only if it is proven by outliers: at least 3 videos of that format, on at least 2 different channels (each channel supplying at least 1, and no single channel supplying all but one), each with views at least 5x its own channel's median. A channel's median only counts if it comes from at least 10 uploads; a thinner channel is a hint, not proof. Every proof is a real link, the views, the channel median and the ratio, with the date seen. No proof, no proposal. Never invent a number. Mark anything unchecked "not verified yet".
+5. If fewer than 2 niches survive, do not present a weak one as a pick: widen the search (more channels, other phrasings of the format, an adjacent niche that still fits their answers) and run the helper again. Only when a second widening still fails, show the best one labelled "unproven test, not a recommendation" and say plainly what is missing.
+6. Keep 2 or 3 survivors. Attack each the way a skeptical viewer would; drop what you cannot defend.
 
 ## Step 3: show 2 or 3 channel concepts, and your pick
 One block per concept, short:
 - **Name idea** (one or two options), **platform**, **format** (what a video is, in one line)
-- **Proof:** 3 links with views, channel median and ratio
+- **Proof:** 3 full links (`https://www.youtube.com/watch?v=...`, typed out in the reply itself and in the Deck card, never only in a file) with views, channel median and ratio
 - **First 3 video ideas** (working titles plus one line each)
 - **Effort:** hours per video, what the agent does, what the person does, tools needed (and what is free)
 
@@ -91,7 +92,7 @@ Use `handoff-kit/criteria-template.md`. Turn the yap and the chosen concept into
 ## Step 5: verify, then hand over
 Prove it: list the files and folders created, show the first 5 lines of `CRITERIA.md`, `git log -1`. If anything failed, say so first. Then end with:
 
-> Done. Your channel is in `channels/<slug>/`, with the research and a plan for video 1. Say "start video 1" and I'll begin.
+> Done. Your channel is in `channels/<slug>/`, with the research and a plan for video 1. Say "start video 1" and I'll begin. (Never tell them to open or read any file here. If they want the proof, offer to paste the links.)
 > Optional, any time: say "back up to GitHub" and I'll walk you through a private backup.
 
 Nothing after that.

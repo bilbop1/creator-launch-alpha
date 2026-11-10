@@ -26,7 +26,7 @@ Help this person get their channels live and earning as fast as possible. Keep n
 Each channel keeps 3 to 8 checkable lines in `channels/<name>/CRITERIA.md`, with a stub in `criteria/<name>.md`. Each is `DONE` with proof or `NOT DONE` with the plain reason. Sweeps score every channel against its file and flag any without one. Never mark DONE without proof you looked at.
 
 ## Proof for niches and formats (parity)
-Never propose a channel format that is not proven by outliers: videos with views far above that channel's own median, at least 3 videos on at least 2 channels, with real links, numbers and observation dates. Method: `channels/<name>/docs/RESEARCH.md` (or `handoff-kit/seed/creator-launch/docs/RESEARCH.md`). Never invent a number.
+Never propose a channel format that is not proven by outliers: videos with views far above that channel's own median, at least 3 videos on at least 2 channels, with real links, numbers and observation dates, and each channel's median taken from at least 10 uploads. Method: `channels/<name>/docs/RESEARCH.md` (or `handoff-kit/seed/creator-launch/docs/RESEARCH.md`). Never invent a number.
 
 ## Sweeps
 When asked, and at the start of every session:
