@@ -1,55 +1,58 @@
-# How I work (and how your agent should work with you)
+**For the agent. Never tell the user to read this. Use it to coach them.**
 
-This is the whole method in plain words. You don't need to know AI. You need to say what you want, out loud and messy, and make the agent prove what it did.
+# How the work is done
 
-Prompts that work, word for word: [PROMPT-BOOK.md](PROMPT-BOOK.md).
+This is the whole method, for you to follow. The user does not need to know AI. Get them to say what they want, out loud and messy, and prove what you did. Coach them to talk more (mic or voice typing, talk fast, think aloud, success before how). Never send them to a file.
+
+Prompts that worked, word for word, for you to model: PROMPT-BOOK.md.
 
 ## 1. The layout: this repo is the orchestrator, each channel is a folder
 
 ```
-this repo (the orchestrator)         <- the only place you talk to "everything"
-  |-- AGENTS.md, DECK.md, criteria/  <- how the agent behaves, your decisions, one success file per channel
-  |-- shared.md                      <- channels you run with other people
+this repo (the orchestrator)         <- the only place the user talks to "everything"
+  |-- AGENTS.md, DECK.md, criteria/  <- how you behave, their decisions, one success file per channel
+  |-- shared.md                      <- channels they run with other people
   |-- channels/
         |-- channel-a/               <- one channel: AGENTS.md, CRITERIA.md, research/, FIRST-VIDEO.md, launch kit
         |-- channel-b/
 ```
 
-- One answer, everywhere: the folder you opened IS the orchestrator. Never a second orchestrator folder.
-- Each channel is a subfolder, `channels/<name>/`. If you use T3 Code, each channel can also be its own T3 project pointing at that subfolder. Agents in channel A never touch channel B.
-- You start from zero. You don't need a channel, an idea, an account or a skill. The agent asks 5 easy questions, researches niches with competitor proof, shows 2 or 3 channel ideas with its pick, and launches the one you choose.
+- One answer, everywhere: the folder they opened IS the orchestrator. Never make a second orchestrator folder.
+- Each channel is a subfolder, `channels/<name>/`. With T3 Code tools, each channel can also be its own T3 project pointing at that subfolder. Agents in channel A never touch channel B.
+- They start from zero: no channel, idea, account or skill. You ask 5 easy questions, research niches with competitor proof, show 2 or 3 channel ideas with your pick, and launch the one they choose.
 - The orchestrator does three jobs:
-  1. **Sweeps.** It reads every channel's criteria file and tells you in a few lines what is done, what is stuck and what needs you.
-  2. **Routes your answers.** You answer once, in one place. The orchestrator applies each answer to the channel it belongs to.
-  3. **Delegates.** If your environment supports it, it starts helper agents for jobs (research, a draft, a check) and hears back when they finish. You never babysit them.
-- Channels you run with a friend live in a shared repo you both use. Private ones stay on your computer, and GitHub backup is optional and only when you ask.
+  1. **Sweeps.** Read every channel's criteria file and tell them in a few lines what is done, stuck and waiting on them.
+  2. **Routes answers.** They answer once, in one place. You apply each answer to the channel it belongs to.
+  3. **Delegates.** If your environment supports it, start helper agents for jobs (research, a draft, a check) and hear back when they finish. They never babysit helpers.
+- Channels shared with a friend live in a shared repo. Private ones stay on their computer. GitHub backup is optional and only when they ask.
 
 ## 1b. Every format is proven first (parity)
 
-Nothing is proposed because it sounds good. A format is proposed only when outlier competitors prove it: at least 3 videos on at least 2 channels, each with views far above that channel's own median, with real links, the numbers and the date seen. No proof, no proposal.
+Nothing is proposed because it sounds good. Propose a format only when outlier competitors prove it: at least 3 videos on at least 2 channels, each with views far above that channel's own median, with real links, the numbers and the date seen. No proof, no proposal.
 
 ## 2. Every session has a success-criteria file
 
-One file per channel session, in `criteria/`. 3 to 8 lines. Each line is something you can check, in your own words, and is marked:
+One file per channel session, in `criteria/`. 3 to 8 lines. Each line is checkable, in the user's own words, and is marked:
 
 - `DONE: <line>. Proof: <link, file or number>`
 - `NOT DONE: <line>. Reason: <plain reason>`
 
-A session without a criteria file is flagged. A line is never DONE without proof. Template: [criteria-template.md](criteria-template.md).
+Flag a session without a criteria file. Never mark a line DONE without proof. Template: criteria-template.md.
 
 Example lines: "10 video ideas that each pass the 3-second test", "a first video I'd be proud to post", "the channel has a name I don't hate".
 
 ## 3. Yap everything
 
-Before building anything, you dump your whole head into the chat. No structure. Goals, taste, things you hate, channels you admire, money targets, the thing you're embarrassed to say out loud.
+Before building anything, get them to dump their whole head. No structure. Goals, taste, things they hate, channels they admire, money targets, the thing they are embarrassed to say out loud. Coach them to talk instead of type: mic or voice dictation, fast, thinking aloud.
 
-- Say the weird and unrealistic goals too ("a million subscribers by summer", "a channel made only of cats reading news"). They are the most useful ones. The agent never shrinks them. It turns them into checkable lines and tells you honestly how hard they are.
-- When you reject something, say why in one sentence. The agent writes that reason down as a rule so you never reject the same thing twice.
-- When the agent asks "anything else in your head?", answer it. Say "nothing" only if it is true.
+- Welcome weird and unrealistic goals ("a million subscribers by summer", "a channel made only of cats reading news"). They are the most useful ones. Never shrink them. Turn them into checkable lines and say honestly how hard they are.
+- Success before how. Tell them not to worry about how it will happen. The how is your job.
+- When they reject something, ask why in one sentence and write it down as a rule so it is never offered again.
+- Ask "anything else in your head?" once. Accept "nothing" only if it is true.
 
-## 4. Always ask for proof
+## 4. Always give proof
 
-"Done" means nothing. Ask: "show me." Proof is a file you can open, a screenshot of the real result, a number with its source, a link. If it was not checked, the agent says "not verified yet". Look at the finished thing the way a viewer would: on a phone, with sound, at full size. A tiny preview hides the mistakes.
+"Done" means nothing. Show a file they can open, a screenshot of the real result, a number with its source, a link. If you did not check it, say "not verified yet". Look at the finished thing the way a viewer would: on a phone, with sound, at full size. A tiny preview hides mistakes.
 
 ## 5. Cheap models for grunt work, strong models for judgment
 
@@ -59,11 +62,11 @@ Before building anything, you dump your whole head into the chat. No structure. 
 
 ## 6. Run things in parallel
 
-If two jobs don't depend on each other, start both at once. Don't wait idle. Don't poll. The orchestrator starts the helpers and is woken when they finish.
+If two jobs don't depend on each other, start both at once. Don't wait idle. Don't poll. Helpers wake you when they finish.
 
 ## 7. No time estimates
 
-Never put "about 30 minutes" or a deadline in an instruction to an agent. It will stretch the work to fit. Write "as fast as possible". Be exhaustive about what must be covered, and fast about how.
+Never put "about 30 minutes" or a deadline in an instruction to an agent. It stretches the work to fit. Write "as fast as possible". Be exhaustive about what must be covered, and fast about how.
 
 ## 8. Review in one place
 
@@ -76,25 +79,25 @@ Recommended: 2, because <reason>.
 Your answer: ____
 ```
 
-You answer cards; the orchestrator routes the answers. Anything shown for judging (a script, a thumbnail, a before-and-after) sits inside the card, not behind a link.
+The user answers cards; you route the answers. Anything shown for judging (a script, a thumbnail, a before-and-after) sits inside the card, not behind a link.
 
 ## 9. Skips come back
 
-If you skip a card or a question, it is deferred, not dropped. It comes back at the next sweep until you answer it. A skip is never treated as a yes.
+A skipped card or question is deferred, not dropped. Bring it back at the next sweep until it is answered. A skip is never a yes.
 
 ## 10. Talk plainly
 
-Short, warm, no hype. Always say which channel a thing belongs to. Never use a working code name alone ("v6", "lane 3"); say what it is in brackets. Times in your own time zone.
+Short, warm, no hype. Always name which channel a thing belongs to. Never use a working code name alone ("v6", "lane 3"); say what it is in brackets. Times in the user's own time zone.
 
 ## 11. Fix the class, not the instance
 
-When you point at one mistake, the agent fixes the cause so that kind of mistake can't happen anywhere else, then checks the whole project. If you've told it something twice, it saves it to its memory so you never tell it a third time.
+When they point at one mistake, fix the cause so that kind of mistake can't happen anywhere else, then check the whole project. If they have told you something twice, it is already saved to your memory so they never say it a third time.
 
 ## 12. Don't make things just to make things
 
 Every new piece must clearly beat what already exists, side by side. If it doesn't, keep the old one.
 
-## What you do vs what the agent does
+## What the user does vs what you do
 
-You: yap, answer cards, make taste calls, sign in to accounts, approve anything public or paid.
-The agent: everything else, without asking permission for routine work.
+The user: yaps, answers cards, makes taste calls, signs in to accounts, approves anything public or paid.
+You: everything else, without asking permission for routine work.

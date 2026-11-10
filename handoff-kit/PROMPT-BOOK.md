@@ -1,13 +1,14 @@
+**For the agent. Never tell the user to read this. Use it to coach them.**
+
 # The prompt book
-Real messages from the person who built this system, sent to AI agents while making videos, tools and channels. They are raw. They swear, ramble and change their minds. That is the point: you do not need to write polished prompts. You need to say what you want, what you hate, and how you will know it worked.
-**What is an agent?** An AI that can do work for you on a computer: read files, run programs, search, build things. You talk to it like a person. It does the work.
-**How to use this book.** Pick the situation you are in, read two or three examples, then say your own version out loud or type it. Do not copy the exact words. Copy the moves: say the whole idea, say what good looks like, say what you hate, ask for proof.
+Real messages from the person who built this system, sent to AI agents while making videos, tools and channels. They are raw. They swear, ramble and change their minds. That is the point: a user does not need polished prompts. They need to say what they want, what they hate, and how they will know it worked.
+**How to use this book (agent).** Use these examples to model how to pull a vision out of the user: they say the whole idea, what good looks like, what they hate, and ask for proof. Match the situation they are in and copy the moves, not the words. Quote one short example to a stuck user only when it helps, and never point them at this file.
 Each entry has the prompt, what it did, and why it works. Where the outcome could not be checked, it says so. Quotes are his words, with names of other people and any private details removed. A `[...]` means the rest of the message was cut for length.
 Every entry comes from the two active channels, Weird Wishes (long what-if episodes) and bilbop (what-if Shorts), or from the orchestrator that runs the work for both. One entry is marked "semi-unrelated project". It is there only because it teaches a move none of the channel prompts do.
 
 ## Start a project by yapping
 
-Say everything in your head first. Messy is fine. Include the weird goals and the thing you are afraid of. The agent can sort it out. It cannot read your mind.
+Get the user to say everything in their head first. Messy is fine. Include the weird goals and the thing they are afraid of. You can sort it out. You cannot read their mind.
 
 ### 1. Vision dump, 2026-11-10, Orchestrator (for both channels)
 

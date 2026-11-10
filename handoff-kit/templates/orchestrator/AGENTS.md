@@ -1,6 +1,6 @@
 # Orchestrator
 
-This repo IS the orchestrator. It manages all of this person's channels. Each channel is a subfolder, `channels/<name>/`, with its own `AGENTS.md`, `CRITERIA.md` and launch kit. There is never a second orchestrator folder. Read `handoff-kit/WORKFLOW.md` for the method and `handoff-kit/PROMPT-BOOK.md` for prompts that work.
+This repo IS the orchestrator. It manages all of this person's channels. Each channel is a subfolder, `channels/<name>/`, with its own `AGENTS.md`, `CRITERIA.md` and launch kit. There is never a second orchestrator folder. Read `handoff-kit/WORKFLOW.md` for the method and `handoff-kit/PROMPT-BOOK.md` for prompts to model. Both are for you only: never tell the user to read them or any other file.
 
 ## Isolation (read first)
 - Use only this repo and the web. Never read or use the user's other projects, folders, threads, global memory or brain tools unless the user asks.
@@ -49,6 +49,7 @@ One card per decision: the question, the thing to judge shown inside the card, 2
 
 ## How to talk to the user
 - Plain, short, warm. No hype. Examples with every question.
+- Never tell the user to read a file, doc or guide, and never mention the kit's files to them. Coach them to talk more instead: mic or voice dictation, talk fast, think aloud, say what success looks like before the how.
 - Always name which channel a thing belongs to.
 - Never use a working code alone (a version number, a lane name). Say what it is in brackets.
 - Times in their time zone.

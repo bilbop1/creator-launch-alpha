@@ -15,6 +15,7 @@ Goal: take someone with NOTHING (no channel, no idea, no accounts, no skills) to
 - Never put secrets, keys or personal paths into files.
 - Questions: numbered, one line each, each with an example answer and `(default: ...)`. A bare "continue", "ok", "sure", "yes", "idk" or "you pick" is not an answer. Re-ask only the unanswered items in one line. Accepting a default needs the number plus the word "default" (`3 default`). If they say "idk", offer 2 or 3 concrete options with your pick marked.
 - Nothing is built until the word BUILD. Research and drafts before that live in `.scratch/` (git-ignored) only.
+- **Never send the user to read anything.** Do not tell them to read a file, doc, README, guide or book, and never mention the kit's files (WORKFLOW, PROMPT-BOOK, COACH, SKILL, AGENTS) to them. Those are for you. Coach them to talk more instead: use a mic or voice dictation, talk fast, think aloud, say what success looks like before worrying about how (the how is your job). If they are stuck, ask one easy question or give one short example.
 - No time estimates. Short plain words. No em dashes.
 
 ## Step 0: the first reply
@@ -41,7 +42,15 @@ Coach checks before moving on:
 - Weak or unrealistic goal: one honest sentence with the reason, never shrink it. Keep it as its own line in the criteria file in their words.
 
 ## Step 2: the agent does the research (no more questions)
-Tell them in one line that you are researching now. Read the research method: `handoff-kit/seed/creator-launch/docs/RESEARCH.md` and `FIELD-GUIDE.md` (or `docs/RESEARCH.md` and `docs/FIELD-GUIDE.md` in this repo if the seed folder is missing). Use whatever web tools your environment has (browser, web search, fetch, `yt-dlp` if installed). Public pages only, no logins. If you have no web tools at all, say so plainly, do not invent numbers, and ask them to paste 5 links of channels they like.
+Tell them in one line that you are researching now. Then do the whole research as one uninterrupted job: no partial reports, no "which option?", no asking them to approve tools, paste data or open channel pages. They have nothing to give you here. Read the research method yourself: `handoff-kit/seed/creator-launch/docs/RESEARCH.md` and `FIELD-GUIDE.md` (or `docs/RESEARCH.md` and `docs/FIELD-GUIDE.md` in this repo if the seed folder is missing).
+
+**Getting real view counts with no setup (YouTube).** Plain page fetches return no video lists, so use the bundled helper, standard-library Python, no install, no login, no key:
+- Find channels for a topic: `python handoff-kit/templates/tools/yt_feed.py search "<topic words>"` (run it for several phrasings and for the niche's format words).
+- Pull the newest 15 uploads with views per channel: `python handoff-kit/templates/tools/yt_feed.py feed @handle @handle UCid... > .scratch/videos.csv` (the `ratio` column is views over that channel's median). Merge runs by appending without the header.
+- If `python` is missing, try `python3` or `py`. If `yt-dlp` is already installed it is a fine extra source.
+- The feed holds only the newest 15 uploads, so say that limit in the research notes. For a proof video, open its watch URL once to confirm the title and views before you quote it.
+- TikTok, Instagram or other platforms: use whatever public pages and web search your environment has, and mark anything unchecked "not verified yet".
+- Only if the helper fails on 3 channels in a row AND you have no other way to read public numbers: say so in one plain line, never invent a number, and ask for 5 links of channels they like. This is the last resort, not a step.
 
 1. From their answers, list 6 to 8 candidate niches. Drop any that need something they said they hate or more weekly time than they have.
 2. For each remaining niche find 5 to 10 competitor channels on the platform that fits (YouTube Shorts, long YouTube, TikTok or Instagram: take the platform from the research).
@@ -65,7 +74,7 @@ Do everything yourself, no questions. Layout (one answer, everywhere): **this re
 
 1. If missing at the repo root, create from `handoff-kit/templates/orchestrator/`: `DECK.md`, `shared.md`, `criteria/` (and the `.gitignore` lines for `.scratch/` and `*.local.md`).
 2. Create `channels/<slug>/` (lowercase slug from the channel name).
-3. Seed it by copying everything inside `handoff-kit/seed/creator-launch/` (research method, templates, `launchkit`). If that folder does not exist but this repo has `launchkit/` and `docs/FIELD-GUIDE.md`, copy `launchkit/`, `docs/`, `templates/`, `examples/`, `tests/` and `README.md` from this repo (skip `.git`, `work/`, `__pycache__`). Otherwise copy `handoff-kit/templates/channel/` and say the full toolkit is missing.
+3. Copy `handoff-kit/templates/tools/` to `channels/<slug>/tools/` (the research helper). Seed it by copying everything inside `handoff-kit/seed/creator-launch/` (research method, templates, `launchkit`). If that folder does not exist but this repo has `launchkit/` and `docs/FIELD-GUIDE.md`, copy `launchkit/`, `docs/`, `templates/`, `examples/`, `tests/` and `README.md` from this repo (skip `.git`, `work/`, `__pycache__`). Otherwise copy `handoff-kit/templates/channel/` and say the full toolkit is missing.
 4. Copy `handoff-kit/templates/channel/AGENTS.md` to `channels/<slug>/AGENTS.md` (the seed has none), and paste the contents of `handoff-kit/COACH.md` into it between `<!-- handoff-kit:begin -->` and `<!-- handoff-kit:end -->`.
 5. Run `python -m launchkit init research` inside `channels/<slug>/` if the module exists.
 6. Move the chosen concept's evidence from `.scratch/` into `channels/<slug>/research/` (`videos.csv`, `ranking.csv`, `RESEARCH.md` with every link, number and date). Put the other concepts in `research/other-concepts.md`.
