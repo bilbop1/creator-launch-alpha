@@ -52,7 +52,7 @@ Do everything yourself. Order:
 6. Write `shared.md` with the shared channels and the usernames they gave.
 
 **B. One folder and repo per private channel**
-1. Create `<root>/<slug>`. Seed it by copying everything inside `handoff-kit/seed/creator-launch/` (the channel launch toolkit: research method, templates, `launchkit` tools). If that folder doesn't exist, copy `handoff-kit/templates/channel/` instead and say the full toolkit is missing.
+1. Create `<root>/<slug>`. Seed it by copying everything inside `handoff-kit/seed/creator-launch/` (the channel launch toolkit: research method, templates, `launchkit` tools). If that folder doesn't exist but the current repo has `launchkit/` and `docs/FIELD-GUIDE.md`, copy those, plus `templates/`, `examples/`, `tests/` and `README.md`, from the current repo (skip `.git`, `work/`, `__pycache__`). Otherwise copy `handoff-kit/templates/channel/` instead and say the full toolkit is missing.
 2. `git init`. Copy `handoff-kit/templates/channel/AGENTS.md` to `AGENTS.md` (the seed has none) and install the same kit files as in A.3 and A.4 (its AGENTS.md gets the coach block).
 3. Run `python -m launchkit init <slug>` inside it if that module exists.
 4. Write `CRITERIA.md` from the template using their answers for this channel.
