@@ -4,24 +4,29 @@ This is the whole method in plain words. You don't need to know AI. You need to 
 
 Prompts that work, word for word: [PROMPT-BOOK.md](PROMPT-BOOK.md).
 
-## 1. The layout: one orchestrator, one project per channel
+## 1. The layout: this repo is the orchestrator, each channel is a folder
 
 ```
-Orchestrator project (one repo)      <- the only place you talk to "everything"
-  |-- criteria/  one success-criteria file per channel session
-  |-- DECK.md    every decision waiting on you, in one place
-  |-- shared.md  channels you run with other people
-Channel A project (its own repo)     <- one channel, one folder, one repo, private
-Channel B project (its own repo)
-Channel C project (its own repo)
+this repo (the orchestrator)         <- the only place you talk to "everything"
+  |-- AGENTS.md, DECK.md, criteria/  <- how the agent behaves, your decisions, one success file per channel
+  |-- shared.md                      <- channels you run with other people
+  |-- channels/
+        |-- channel-a/               <- one channel: AGENTS.md, CRITERIA.md, research/, FIRST-VIDEO.md, launch kit
+        |-- channel-b/
 ```
 
-- Each channel is its own **T3 Code project** with its own **git repo**. Agents in channel A never touch channel B.
-- The **orchestrator** is a separate project. It does three jobs:
-  1. **Sweeps.** It reads every channel's criteria file, looks at what each channel session is doing, and tells you in a few lines what is done, what is stuck and what needs you.
-  2. **Routes your answers.** You answer once, in one place. The orchestrator sends each answer to the channel session it belongs to.
-  3. **Delegates.** It starts helper agents for jobs (research, a draft, a check) and hears back when they finish. You never babysit them.
-- Channels you run with a friend live in a shared repo you both use. Private ones stay private.
+- One answer, everywhere: the folder you opened IS the orchestrator. Never a second orchestrator folder.
+- Each channel is a subfolder, `channels/<name>/`. If you use T3 Code, each channel can also be its own T3 project pointing at that subfolder. Agents in channel A never touch channel B.
+- You start from zero. You don't need a channel, an idea, an account or a skill. The agent asks 5 easy questions, researches niches with competitor proof, shows 2 or 3 channel ideas with its pick, and launches the one you choose.
+- The orchestrator does three jobs:
+  1. **Sweeps.** It reads every channel's criteria file and tells you in a few lines what is done, what is stuck and what needs you.
+  2. **Routes your answers.** You answer once, in one place. The orchestrator applies each answer to the channel it belongs to.
+  3. **Delegates.** If your environment supports it, it starts helper agents for jobs (research, a draft, a check) and hears back when they finish. You never babysit them.
+- Channels you run with a friend live in a shared repo you both use. Private ones stay on your computer, and GitHub backup is optional and only when you ask.
+
+## 1b. Every format is proven first (parity)
+
+Nothing is proposed because it sounds good. A format is proposed only when outlier competitors prove it: at least 3 videos on at least 2 channels, each with views far above that channel's own median, with real links, the numbers and the date seen. No proof, no proposal.
 
 ## 2. Every session has a success-criteria file
 

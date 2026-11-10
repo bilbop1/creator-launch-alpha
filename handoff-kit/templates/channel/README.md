@@ -1,3 +1,3 @@
-# Channel project
+# Channel folder
 
-One channel, one repo. Start by opening this folder in your agent and typing `yap`. Your success criteria live in `CRITERIA.md`.
+One channel, inside the orchestrator repo as `channels/<name>/`. Success criteria: `CRITERIA.md`. Plan for video 1: `FIRST-VIDEO.md`. Evidence: `research/`. Open this folder in your agent and say "start video 1".
