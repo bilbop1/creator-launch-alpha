@@ -1,0 +1,16 @@
+# secrets and local machine files
+.env
+.env.*
+*.key
+*.pem
+secrets/
+*.local.md
+.claude/settings.local.json
+
+# media and scratch
+*.mp4
+*.mov
+*.wav
+*.zip
+__pycache__/
+node_modules/
