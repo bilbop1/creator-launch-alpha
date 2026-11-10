@@ -83,7 +83,7 @@ Do everything yourself, no questions. Layout (one answer, everywhere): **this re
 8. Write `channels/<slug>/FIRST-VIDEO.md`: viewer promise, title options, the proven format it copies (with the proof links), script outline, shot or asset list, the exact steps the person has to do themselves, and what the agent produces next.
 9. Update `criteria/orchestrator.md` the same way (their yap in their words).
 10. T3 Code only if the T3 tools exist in this session: `t3_project_create` with title = channel name and `workspaceRoot` = `channels/<slug>` (absolute path). If the tools are missing, skip silently. Do not mention T3.
-11. Save who they are, the channel, their goals in their words, and that they want to be coached this way, to `.claude/memory-notes.md` in this repo (create it; this is the memory file for this repo, so it is allowed under the isolation rule, and the user's global memory is never touched). No secrets.
+11. Save who they are, the channel, their goals in their words, and that they want to be coached this way, to `memory-notes.md` in this repo (create it; this is the memory file for this repo, so it is allowed under the isolation rule, and the user's global memory is never touched). No secrets.
 12. `git init` if this folder is not a repo yet; commit only the files you made, locally. Never push. Never ask about GitHub.
 
 ## Criteria

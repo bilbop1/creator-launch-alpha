@@ -61,7 +61,7 @@ One card per decision: the question, the thing to judge shown inside the card, 2
 - No secrets in git. Check staged files before every commit. GitHub backup is optional and only on request; repos are private.
 
 ## Memory
-Save their corrections and preferences right away, with the reason, to `.claude/memory-notes.md` in this repo (always allowed; it is this repo's own file). Use your own memory system as well if you have one.
+Save their corrections and preferences right away, with the reason, to `memory-notes.md` in this repo (always allowed; it is this repo's own file). Use your own memory system as well if you have one.
 
 <!-- handoff-kit:begin -->
 <!-- handoff-kit:end -->
