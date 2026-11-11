@@ -10,13 +10,15 @@ For the agent. Gives you real view counts so you never have to ask the user to p
 ratio = views / that channel's median views over the same 15 uploads. Notes go to stderr.
 Save the rows to .scratch/videos.csv. Numbers are the public view counts seen today.
 Limits: the feed only holds the newest 15 uploads, so an old viral video can be missing.
-If this fails on 3 channels in a row, say so plainly and try another source. Never invent numbers.
+It retries on its own. Prefer the UC channel ids that `search` prints over @handles (handles need an extra page fetch that fails more often).
+If this fails on 3 channels in a row even by UC id, wait a minute and run it again before anything else. Never invent numbers.
 """
 import csv
 import datetime
 import re
 import statistics
 import sys
+import time
 import urllib.parse
 import urllib.request
 
@@ -24,9 +26,18 @@ UA = {"User-Agent": "Mozilla/5.0", "Accept-Language": "en-US,en;q=0.9"}
 
 
 def get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8", "replace")
+    # YouTube sometimes answers 429 or 500 for a moment; wait and retry a few times before giving up
+    last = None
+    for wait in (0, 3, 8, 20):
+        if wait:
+            time.sleep(wait)
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001
+            last = e
+    raise last
 
 
 def channel_id(ref):
