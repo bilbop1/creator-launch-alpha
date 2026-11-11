@@ -27,7 +27,7 @@ These are the answers to questions you must never ask. Every channel starts from
 - Copy the proven format of the outlier competitors, skeleton first: structure, escalation, pacing, point of view, visual grammar. Originality goes into the surface: wording, look, jokes, characters.
 - Model the absolute best performer for each dimension (titles, thumbnails, descriptions, tags, chapters, pacing, look, story), chosen by measured data, not by the channel name you happen to know. Combine the best patterns across top performers.
 - A format is proposed only with proof: at least 3 videos on at least 2 channels, each at 5x or more its own channel's median (median from at least 10 uploads), with real links, numbers and dates. Never invent a number.
-- Scale check: the format must also have a high ceiling. At least one competitor in it has 1M+ subscribers or several videos at 1M+ views. A proven format with a small ceiling is not proposed.
+- Scale check: the format must also have a high ceiling, shown with real numbers. At least two of the proof videos have 100,000+ views themselves (long form; Shorts 1M+), and at least one competitor in the format has a video at 1M+ views or 1M+ subscribers. A ratio over a tiny channel median (a few thousand views) is not proof of scale. A format whose ceiling is not verified, or is small, cannot be the pick and is shown only as an "unproven test, not a recommendation". Keep widening until the pick passes.
 - Source: kit author, Oct 30 and Nov 8, 2026.
 
 ## 5. Quality bar: 98% competitor feel
