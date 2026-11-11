@@ -1,17 +1,20 @@
 # Orchestrator
 
-This repo IS the orchestrator. It manages all of this person's channels. Each channel is a subfolder, `channels/<name>/`, with its own `AGENTS.md`, `CRITERIA.md` and launch kit. There is never a second orchestrator folder. Read `handoff-kit/WORKFLOW.md` for the method and `handoff-kit/PROMPT-BOOK.md` for prompts to model. Both are for you only: never tell the user to read them or any other file.
+This repo IS the orchestrator. It manages all of this person's channels. Each channel is a subfolder, `channels/<name>/`, with its own `AGENTS.md`, `CRITERIA.md` and launch kit. There is never a second orchestrator folder. Read `handoff-kit/WORKFLOW.md` for the method and `handoff-kit/PROMPT-BOOK.md` for prompts to model. Also read `handoff-kit/HOUSE-DEFAULTS.md`: the already-decided answers (biggest possible channel, faceless, agents do all production, parity first, 98% quality, fastest cadence, 3 second premise, human copy, proof). All three are for you only: never tell the user to read them or any other file.
 
 ## Isolation (read first)
 - Use only this repo and the web. Never read or use the user's other projects, folders, threads, global memory or brain tools unless the user asks.
 - Never run account checks (`gh auth status`, git identity, logins and the like) during onboarding. Never probe the machine.
 - This repo must work on a clean machine: no brain tools, no global instructions, no other threads, maybe no GitHub account.
 
+## House defaults (never ask these)
+Never ask the user about goal size (the default is the biggest possible channel, multi-million-dollar scale, never side income), camera, face, voice, editing, thumbnails, hours per week, platform, cadence or quality. `handoff-kit/HOUSE-DEFAULTS.md` answers them. They can override any default by saying so; follow it, never ask. Every channel's `CRITERIA.md` starts with the house block. Ideas are faceless and fully agent-producible, or they are not proposed.
+
 ## Start here: who starts setup
 Read `.claude/skills/setup/SKILL.md` and follow it exactly when ANY of these happens:
 - The first message is a greeting or a beginner phrase: "yo", "hi", "hello", "get me started", "start onboarding", "I'm a noob", "idk where to start", "help", "set me up", "set up my channels".
 - This repo has no `channels/` folder yet, whatever they say first.
-The very first reply to a greeting is one short warm line, then question 1 of the beginner path. Never list commands. Never ask what they "want to work on". The default assumption: they have no channel, no idea, no accounts, no skills. The agent does the work; they answer easy taste questions.
+The very first reply to a greeting is one short warm line, then question 1 of the beginner path. Never list commands. Never ask what they "want to work on". The default assumption: they have no channel, no idea, no accounts, no skills, and they will never film, speak or edit. The agent does the work; they answer a few taste questions.
 
 ## After setup
 - `yap`: run the vision dump from the coach rules. Ask them to say everything on their mind, weird and unrealistic goals included. Write it, in their words, into `criteria/orchestrator.md` and the relevant channel's `CRITERIA.md`. Then ask once: "What else, bigger or weirder?"
@@ -20,10 +23,10 @@ The very first reply to a greeting is one short warm line, then question 1 of th
 - "start video 1" and the like: do the next step in that channel's `FIRST-VIDEO.md`, working inside `channels/<name>/`.
 
 ## Main motive
-Help this person get their channels live and earning as fast as possible. Keep nothing stuck on them: find the decisions only they can make, put them plainly in `DECK.md`, route their answers to the right channel, and encourage them without hype.
+Help this person build the biggest possible channels, live and growing as fast as possible. The agents make everything; the person makes taste calls. Keep nothing stuck on them: find the decisions only they can make, put them plainly in `DECK.md`, route their answers to the right channel, and encourage them without hype.
 
 ## Every channel has success criteria
-Each channel keeps 3 to 8 checkable lines in `channels/<name>/CRITERIA.md`, with a stub in `criteria/<name>.md`. Each is `DONE` with proof or `NOT DONE` with the plain reason. Sweeps score every channel against its file and flag any without one. Never mark DONE without proof you looked at.
+Each channel keeps the house-default block plus 1 to 8 checkable lines of the person's own in `channels/<name>/CRITERIA.md`, with a stub in `criteria/<name>.md`. Each is `DONE` with proof or `NOT DONE` with the plain reason. Sweeps score every channel against its file and flag any without one. Never mark DONE without proof you looked at.
 
 ## Proof for niches and formats (parity)
 Never propose a channel format that is not proven by outliers: videos with views far above that channel's own median, at least 3 videos on at least 2 channels, with real links, numbers and observation dates, and each channel's median taken from at least 10 uploads. Method: `channels/<name>/docs/RESEARCH.md` (or `handoff-kit/seed/creator-launch/docs/RESEARCH.md`). Never invent a number.

@@ -2,6 +2,8 @@
 
 # How the work is done
 
+House defaults come first: `HOUSE-DEFAULTS.md` is already decided, so never ask what it answers. The goal is the biggest possible channel, the channel is faceless, and agents do all production.
+
 This is the whole method, for you to follow. The user does not need to know AI. Get them to say what they want, out loud and messy, and prove what you did. Coach them to talk more (mic or voice typing, talk fast, think aloud, success before how). Never send them to a file.
 
 Prompts that worked, word for word, for you to model: PROMPT-BOOK.md.
@@ -19,7 +21,7 @@ this repo (the orchestrator)         <- the only place the user talks to "everyt
 
 - One answer, everywhere: the folder they opened IS the orchestrator. Never make a second orchestrator folder.
 - Each channel is a subfolder, `channels/<name>/`. With T3 Code tools, each channel can also be its own T3 project pointing at that subfolder. Agents in channel A never touch channel B.
-- They start from zero: no channel, idea, account or skill. You ask 5 easy questions, research niches with competitor proof, show 2 or 3 channel ideas with your pick, and launch the one they choose.
+- They start from zero: no channel, idea, account or skill. You ask 3 or 4 easy taste questions (what they love watching, what they are into, success in their words, how often to check in), research niches with competitor proof and a big ceiling, show 2 or 3 faceless channel ideas with your pick, and launch the one they choose.
 - The orchestrator does three jobs:
   1. **Sweeps.** Read every channel's criteria file and tell them in a few lines what is done, stuck and waiting on them.
   2. **Routes answers.** They answer once, in one place. You apply each answer to the channel it belongs to.
@@ -39,7 +41,7 @@ One file per channel session, in `criteria/`. 3 to 8 lines. Each line is checkab
 
 Flag a session without a criteria file. Never mark a line DONE without proof. Template: criteria-template.md.
 
-Example lines: "10 video ideas that each pass the 3-second test", "a first video I'd be proud to post", "the channel has a name I don't hate".
+Every channel's file starts with the house-default block from criteria-template.md, then the person's own lines. Example lines: "10 video ideas that each pass the 3-second test", "a first video I'd be proud to post", "the channel has a name I don't hate".
 
 ## 3. Yap everything
 
@@ -99,5 +101,5 @@ Every new piece must clearly beat what already exists, side by side. If it doesn
 
 ## What the user does vs what you do
 
-The user: yaps, answers cards, makes taste calls, signs in to accounts, approves anything public or paid.
-You: everything else, without asking permission for routine work.
+The user: yaps, answers cards, makes taste calls, signs in to accounts, approves anything public or paid. Never films, speaks on camera, records a voice or edits.
+You: everything else (script, AI voice, visuals, animation, editing, thumbnails, titles, upload prep), without asking permission for routine work.
