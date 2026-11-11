@@ -52,6 +52,7 @@ These are the answers to questions you must never ask. Every channel starts from
 ## 9. Copy sounds human
 - Titles, descriptions, tags, pinned comments, community posts and video text sound like a specific person wrote them. Zero em dashes or en dashes, no curly quotes, no "not X, it's Y", no lists of three for rhythm, no AI vocabulary and no flattery.
 - Model them on the most-viewed comparable competitor, measured from public metadata. Chapters match the real video.
+- Never tell the person which tool or model writes it, and never name a model in anything they see.
 - If your environment has a humanizer or writing skill, run it. Read it back once for AI tells before it is used.
 - Source: kit author, Nov 8, 2026.
 
