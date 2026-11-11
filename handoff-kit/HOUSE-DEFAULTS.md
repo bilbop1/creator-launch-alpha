@@ -73,3 +73,6 @@ These are the answers to questions you must never ask. Every channel starts from
 
 ## The only questions that are theirs
 What they love watching. What they are into or curious about. Their own words about success (default: item 1). Which of the 2 or 3 researched concepts they want. How often they want a check-in. Anything else is answered by this file.
+
+## One long-form at a time
+Long-form videos are built one at a time, each finished to upload before the next one starts. All helper agents work inside that one video under one parent agent. Shorts are the exception: each Short can get its own helper and run in parallel. (Owner rule, Nov 11.)
