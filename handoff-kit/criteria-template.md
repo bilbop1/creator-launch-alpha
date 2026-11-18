@@ -15,6 +15,9 @@ Rules:
 - NOT DONE: Fastest proven cadence. Check: upload dates show a video every 1 to 2 days for long form, or daily for Shorts, from launch. Reason: just started.
 - NOT DONE: Premise a kid gets in 3 seconds, with personal stakes. Check: each idea has a written 3 second test and was approved by the person by name before any script. Reason: just started.
 - NOT DONE: Copy sounds human. Check: titles, descriptions and tags have zero dashes and no AI phrasing, modeled on the most-viewed competitor. Reason: just started.
+- NOT DONE: Wins blind before it is locked. Check: each video's title, thumbnail and opening have a strict blind click test result (pairwise, both orders, no story context, several model families) that beats the best competitor card, with the numbers. Reason: just started.
+- NOT DONE: Story spine and runtime. Check: each script has a spine (subject, question, rising stakes, turn, payoff) and long-form runs 8:00 or more. Reason: just started.
+- NOT DONE: Ship first. Check: published videos and their views, counted every week. Reason: just started.
 - NOT DONE: Proof before done. Check: every DONE line in this file links a file, screenshot or number. Reason: just started.
 
 ## The person's own goals (their words)

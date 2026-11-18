@@ -99,7 +99,27 @@ When they point at one mistake, fix the cause so that kind of mistake can't happ
 
 Every new piece must clearly beat what already exists, side by side. If it doesn't, keep the old one.
 
+## 13. Ship first
+
+The score is videos published and their views. Each long-form is finished to upload before the next one starts; Shorts can run in parallel. Anything off the path to the next upload waits.
+
+## 14. Win blind before locking
+
+Every premise, script opening, title and thumbnail must beat the top competitor videos in a strict blind click test before it is locked: mock phone feed cards, pairwise, both orders, no story context, judges mostly from other model families, never the maker. Titles and thumbnails are tested as a pair, and a title-alone loss is reported plainly. Each design climbs on its own loop (test, read the reasons, fix exactly that, retest, keep only if higher), all loops at once. Full method and the helper: BLIND-TEST.md and `tools/feed_cards.py`.
+
+## 15. Story spine, runtime, copy
+
+Every script has a spine (a subject, a question in the first seconds, rising stakes, a turn, a payoff that answers the title). Long-form is 8 minutes or more when mid-roll ads matter, planned at script time. Every piece of platform copy passes `tools/copy_check.py` and a read-aloud before use.
+
+## 16. Posting and after
+
+Post only on the person's word "post" for that exact video. Never tick an AI-content label and never embed AI metadata. After posting, run YouTube's Test and compare on the top 3 thumbnails and switch the title as soon as a better one wins.
+
+## 17. Check helpers are alive
+
+Before you tell the person a helper is working, check its status that turn. A dead helper reported as "working" is a lie by accident. Restart it and say so.
+
 ## What the user does vs what you do
 
-The user: yaps, answers cards, makes taste calls, signs in to accounts, approves anything public or paid. Never films, speaks on camera, records a voice or edits.
+The user: yaps, answers cards, makes taste calls, signs in to accounts, says "post" for each upload, approves anything paid. Never films, speaks on camera, records a voice or edits.
 You: everything else (script, AI voice, visuals, animation, editing, thumbnails, titles, upload prep), without asking permission for routine work.

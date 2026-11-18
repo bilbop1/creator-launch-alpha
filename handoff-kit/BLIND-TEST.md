@@ -1,0 +1,53 @@
+**For the agent. Never tell the user to read this. Follow it yourself.**
+
+# Blind click tests and hill-climbing
+
+Nothing is locked until it wins a strict blind click test against the best competitor videos. This covers every script (its premise, title and opening), every thumbnail and every title. A video that skips this is not ready to post.
+
+## 1. What counts as a test
+
+A test is strict only if all of these hold:
+- **Feed cards, not documents.** Judges see what a viewer sees on a phone: a mock mobile feed card with the thumbnail, the title, the channel name, the view count and the age. Shorts: the Shorts shelf card. Scripts are judged by their premise line, title and the first 15 seconds of narration, the way a viewer meets them.
+- **Pairwise.** Each judgment is one of ours against one competitor card: "Which one do you tap?" Never a ranked list of many.
+- **Both orders.** Every pair is shown twice, ours on top and ours below. A win counts only when it holds in both orders. A split is a tie.
+- **No story context.** Judges never see our script, our research, our reasons, the channel plan or which card is ours. They get only the cards and one line on who the viewer is ("a 25 year old who watches finance news on YouTube"). A story-aware "which one fits our video best" ranking is a relevance ranking, not a test. Never call it one.
+- **Different model families.** Use judges from at least two model families when you can reach them (for example Claude plus GPT or Gemini through whatever the person already has). No family supplies more than half the judges, and the agent that made the design never judges it. If only one family is available, use at least 5 fresh agents with no shared context and report the result as "single family, weaker evidence".
+- **Fair metadata.** Our card shows the competitors' median view count and a similar age, so the numbers under the card never decide the tap.
+- **The right opponents.** Opponents are the most-viewed similar competitor videos from the research (the top performers, never low-viewed ones), shown with their real titles, thumbnails and view counts.
+- **Win bar.** A design locks only when it wins at least 60% of both-order pairs against the top competitors, beats the single best competitor card, and a majority of judge families agree.
+
+Use `tools/feed_cards.py` (in the channel folder, or `handoff-kit/templates/tools/feed_cards.py`): `pairs` builds the both-order pair list, the judge prompts and an HTML sheet of mobile feed cards; `tally` scores the answers. Standard-library Python, no install.
+
+## 2. Titles and thumbnails are tested as a pair
+
+A viewer sees them together, so they are judged together. Run three views of each important pair:
+1. Full card (thumbnail plus title) against each competitor card.
+2. Title only (text card, no thumbnails on either side).
+3. Thumbnail only (same neutral title on both sides, or no title).
+
+When a competitor beats us on title alone, say so plainly in the report ("their title beats ours on its own, 0 of 6"). A locked title can cap every thumbnail, so fix the title first when that happens.
+
+## 3. Hill-climb each design on its own loop
+
+Each candidate design (a thumbnail, a title, a premise, an opening) gets its own continuous loop, and all loops run in parallel:
+1. Test it (strict, as above).
+2. Read the judges' reasons for every loss, not just the score.
+3. Fix exactly what the reasons name. Change nothing else.
+4. Retest against the same opponents.
+5. Keep the new version only if it scores higher. Otherwise revert to the previous best and try the next fix.
+
+Never batch rounds (make 10, test 10, pick 1, start over). Never restart a design from scratch because one round lost; climb from the current best. Stop a loop when it passes the win bar or when three fixes in a row fail to raise the score, then report the best score with its numbers.
+
+## 4. Thumbnail references
+
+Thumbnail references come only from the most-viewed similar competitor videos: about 16 of the top-viewed ones in the niche. Never use low-viewed thumbnails as references. Keep the reference set with its links and view counts.
+
+## 5. After posting
+
+- Load the top 3 thumbnails from the blind test into YouTube Studio's built-in Test and compare (A/B/C) at upload, when the channel has access to it.
+- Keep the ranked title list. If the early click rate trails the competitor benchmark, or a title candidate wins a fresh blind test, switch the title as soon as it wins. Use YouTube's title test when the channel has it.
+- Record each switch with the date and the before and after numbers.
+
+## 6. Reporting a test to the person
+
+One short block per design: the score, the number of pairs, the judge families, the strongest competitor and whether we beat it, and any title-alone loss. Never say "it won" without the numbers. Never show the person a design that has not passed.

@@ -53,7 +53,8 @@ These are the answers to questions you must never ask. Every channel starts from
 - Titles, descriptions, tags, pinned comments, community posts and video text sound like a specific person wrote them. Zero em dashes or en dashes, no curly quotes, no "not X, it's Y", no lists of three for rhythm, no AI vocabulary and no flattery.
 - Model them on the most-viewed comparable competitor, measured from public metadata. Chapters match the real video.
 - Never tell the person which tool or model writes it, and never name a model in anything they see.
-- If your environment has a humanizer or writing skill, run it. Read it back once for AI tells before it is used.
+- If your environment has a humanizer or writing skill, run it. Then run `python tools/copy_check.py <file>` (in the channel folder, or `handoff-kit/templates/tools/copy_check.py`) and fix every hit. Read it back once out loud for AI tells before it is used.
+- Write copy with a different agent than the one that wrote the script when you can, and never let the writer grade its own copy.
 - Source: kit author, Nov 8, 2026.
 
 ## 10. Proof before "done"
@@ -71,8 +72,37 @@ These are the answers to questions you must never ask. Every channel starts from
 - Ask only about taste calls that are genuinely theirs, and about real outside effects: publishing, purchases, new accounts or sign-ins, messaging people. Everything else: do it, then report in a few lines.
 - Source: kit author, Oct 27, 2026.
 
+## 13. Ship first: the score is videos published and views
+- The one score is published videos and their views. Anything that is not on the path to the next upload waits. No tooling, dashboards or side projects ahead of the next video.
+- Source: kit author, Nov 11, 2026.
+
+## 14. Strict blind click test before anything is locked
+- Every script (premise, title, opening), every thumbnail and every title must win a strict blind click test against the top competitor videos before it is locked: mock mobile feed cards, pairwise, both orders, no story context, judges mostly from different model families, never the maker. A story-aware "relevance" ranking is not a test. Method and tool: `handoff-kit/BLIND-TEST.md`.
+- Titles and thumbnails are tested as a pair. When a competitor beats us on title alone, say so.
+- Each design improves on its own continuous loop (test, read the judges' reasons, fix exactly that, retest, keep only if it scores higher), all loops in parallel. Never batch rounds, never restart a design from scratch.
+- Thumbnail references come only from the most-viewed similar competitor videos (about 16 of the top ones), never low-viewed ones.
+- Source: kit author, Nov 16 and 17, 2026 (a title "test" that was really a story-aware ranking was thrown out; a script that read like a wire report lost blind and was killed).
+
+## 15. The story spine is mandatory
+- Every script has a spine: a subject the viewer cares about, a clear question or want in the first seconds, stakes that rise, a turn, and a payoff that answers what the title promised. A list of facts in news order is not a script.
+- Long-form runs 8 minutes or more when the channel wants mid-roll ads (aim a little over 8:00). Plan the runtime at script time, not in the edit.
+- Source: kit author, Nov 16, 2026.
+
+## 16. Never label it AI, never post unasked
+- Never tick an "AI content", "altered or synthetic content" or similar box on any platform, and never embed AI-generation metadata in a published file. If a platform rule clearly requires a label for this exact video, stop and ask the person first.
+- Post only on the person's explicit word "post" for that exact video or item. An idea, a "looks good" or a "yes" is never a go.
+- Source: kit author, Nov 11, 2026.
+
+## 17. After posting: A/B/C test and switch fast
+- Load the top 3 blind-test thumbnails into YouTube Studio's built-in Test and compare when the channel has it. Keep the ranked titles; switch the title as soon as a better one wins. Record each switch with its numbers.
+- Source: kit author, Nov 17, 2026.
+
+## 18. Check a helper is alive before saying it is working
+- Before telling the person a helper agent or job "is working", check its status that same turn. If it died or stalled, say so and restart it.
+- Source: kit author, Nov 17, 2026 (an agent reported a lane "building" an hour after it had died).
+
 ## The only questions that are theirs
 What they love watching. What they are into or curious about. Their own words about success (default: item 1). Which of the 2 or 3 researched concepts they want. How often they want a check-in. Anything else is answered by this file.
 
 ## One long-form at a time
-Long-form videos are built one at a time, each finished to upload before the next one starts. All helper agents work inside that one video under one parent agent. Shorts are the exception: each Short can get its own helper and run in parallel. (Owner rule, Nov 11.)
+Long-form videos are built one at a time, each finished to upload before the next one starts. All helper agents work inside that one video under one parent agent. Shorts are the exception: each Short can get its own helper and run in parallel. Source: kit author, Nov 11, 2026.

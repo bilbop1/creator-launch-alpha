@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Setup wizard. Runs when the user says "set me up", or says hi / yo / hello, "get me started", "start onboarding", "I'm a noob", "idk where to start", "help", or sends any first message while this repo has no channels/ folder yet. Starts from zero: asks a few easy questions, researches niches with competitor proof, shows 2 or 3 channel concepts, and launches the one the person picks.
+description: Setup wizard. Runs when the user says "set me up", or says hi / yo / hello, "get me started", "start onboarding", "I'm a noob", "idk where to start", "help", "help me start a channel about <anything>", or sends any first message while this repo has no channels/ folder yet. Starts from zero: asks a few easy questions, researches niches with competitor proof, shows 2 or 3 channel concepts, and launches the one the person picks.
 ---
 
 # Setup wizard
@@ -24,13 +24,15 @@ Goal: take someone with NOTHING (no channel, no idea, no accounts, no skills) to
 
 ## Step 0: the first reply
 If the message is a greeting or a beginner phrase ("yo", "hi", "get me started", "start onboarding", "I'm a noob", "idk where to start", "help"), or this repo has no `channels/` folder yet, start here. Do not list commands. Do not look around. Do not check anything.
-Reply with ONE short warm line, then question 1 of the beginner path. Example:
+Reply with ONE short warm line, then question 1 of the beginner path. If their first message already names a topic ("help me start a channel about cars"), that answers question 2: skip it and do not ask it again. Example:
 
 > Welcome. You don't need a channel or an idea, I'll find one and my agents make everything. A few quick taste questions first, no wrong answers.
 >
 > 1. What do you binge-watch or scroll the most? Example: "true crime, Minecraft clips, cooking shorts". (default: I pick broad crowd-pleasers and you react to what I find)
 
 If they say they already have channels, skip to "Secondary path" below.
+
+Right before research starts, add one plain line: `Your computer may ask permission for me to search the web or run a small helper. Say yes (or "always allow") so I can keep going.`
 
 ## Step 1: the beginner questions
 Ask question 1 first. After it is answered, ask 2 to 4 together in one message (skip any they already answered):
@@ -74,6 +76,7 @@ Always show at least 2 blocks (2 or 3). If only one format passed the proof bar,
 - **Proof:** 3 full links (`https://www.youtube.com/watch?v=...`, typed out in the reply itself and in the Deck card, never only in a file) with views, channel median and ratio
 - **First 3 video ideas** (working titles plus one line each)
 - **Scale:** the biggest competitor's subscribers and best video views, as proof of the ceiling.
+- **How it gets tested:** one line naming the top competitor videos our titles and thumbnails must beat in a blind click test before anything is posted.
 - **Production:** one line saying agents make everything (script, AI voice, visuals, editing, thumbnails, upload prep) and the person only makes taste calls. Tools needed and what is free. Never list work for the person, never an hours-per-week fit.
 
 Then, anti-sycophantic and short: `My pick: concept N, because <reason>. Biggest risk: <one line>.` Put the same block in `DECK.md` as Card 1 (with the evidence in `.scratch/`).
@@ -90,7 +93,7 @@ Do everything yourself, no questions. Layout (one answer, everywhere): **this re
 5. Run `python -m launchkit init research` inside `channels/<slug>/` if the module exists.
 6. Move the chosen concept's evidence from `.scratch/` into `channels/<slug>/research/` (`videos.csv`, `ranking.csv`, `RESEARCH.md` with every link, number and date). Put the other concepts in `research/other-concepts.md`.
 7. Write `channels/<slug>/CRITERIA.md` from `handoff-kit/criteria-template.md`: the house-default block first, then 1 to 8 lines from the person's own words (see "Criteria"). Write `criteria/<slug>.md` as a short stub pointing to it.
-8. Write `channels/<slug>/FIRST-VIDEO.md`: viewer promise, title options, the proven format it copies (with the proof links), script outline, shot or asset list, who produces each piece (always the agents), the taste calls or sign-ins waiting on the person (never filming, recording or editing), and what the agent produces next. Run the 3 second premise test from the house defaults now, on the first idea, and write the result in it (pass or fail with the one-line reason). If it fails, replace the idea before writing the rest. Never leave it as "not run yet".
+8. Write `channels/<slug>/FIRST-VIDEO.md`: viewer promise, title options, the proven format it copies (with the proof links), script outline, shot or asset list, who produces each piece (always the agents), the taste calls or sign-ins waiting on the person (never filming, recording or editing), and what the agent produces next. Run the 3 second premise test from the house defaults now, on the first idea, and write the result in it (pass or fail with the one-line reason). If it fails, replace the idea before writing the rest. Never leave it as "not run yet". Also write: the story spine (subject, the question in the first seconds, rising stakes, the turn, the payoff), the planned runtime (8:00 or more for long-form), and a **blind-test plan** from `handoff-kit/BLIND-TEST.md`: the 6 to 10 opponent cards (the most-viewed similar videos, each with link, title and views), about 16 top-viewed thumbnail references, 3 title and 3 thumbnail directions to test, the judge families available here, the pass bar, and the post-publish A/B/C thumbnail test. Run `python tools/copy_check.py` on the title options and fix any hit.
 9. Update `criteria/orchestrator.md` the same way (their yap in their words).
 10. T3 Code only if the T3 tools exist in this session: `t3_project_create` with title = channel name and `workspaceRoot` = `channels/<slug>` (absolute path). If the tools are missing, skip silently. Do not mention T3.
 11. Save who they are, the channel, their goals in their words, and that they want to be coached this way, to `memory-notes.md` in this repo (create it; this is the memory file for this repo, so it is allowed under the isolation rule, and the user's global memory is never touched). No secrets.
@@ -100,7 +103,7 @@ Do everything yourself, no questions. Layout (one answer, everywhere): **this re
 Use `handoff-kit/criteria-template.md`. Copy its house-default block into `CRITERIA.md` unchanged (those lines are the standing success criteria, never asked), then add 1 to 8 checkable lines from the yap and the chosen concept, their words quoted. Weird and unrealistic goals stay as their own lines with a plain check (the number, from the platform). If they gave no goal, only the house block exists, and the scale line carries the biggest-channel goal. Mark everything `NOT DONE`, reason "just started". Add one line a good coach would add, marked `(coach suggestion, not yours)`, for example "first video posted and watched to the end by one stranger". Never write "you agreed" for something they did not say. Include a line for the first video: "FIRST-VIDEO.md done and the first video produced". Any override they stated (for example "keep it small", "I want to be on camera") is a line in their words and replaces the matching house line.
 
 ## Step 5: verify, then hand over
-Verify it yourself, silently: the folders and files exist, `CRITERIA.md` has the goals in their words, the commit landed. If anything failed, say so first in plain words. Otherwise do not list files, commit hashes, tool names or internals to a beginner. Tell them in 3 to 5 plain lines: the channel name, what it will make, the proof it copies (one link), their goals in their own words (and that the aim is the biggest channel in the niche), and that the agents handle all production. Nothing is a to-do for them except taste calls and sign-ins. No "open gaps" or "still open" lists, no process notes, no tool names. Never mention commits, saving, pushing, origin, GitHub, local paths, file names, lookup or helper problems, or ratio quirks. One plain sentence about anything unchecked is enough. Then end with:
+Verify it yourself, silently: the folders and files exist, `CRITERIA.md` has the goals in their words, the commit landed. If anything failed, say so first in plain words. Otherwise do not list files, commit hashes, tool names or internals to a beginner. Tell them in 3 to 5 plain lines: the channel name, what it will make, the proof it copies (one link), their goals in their own words (and that the aim is the biggest channel in the niche), and that the agents handle all production. Nothing is a to-do for them except taste calls, sign-ins and the word "post" when a finished video is ready. Say in one line that nothing is posted until titles and thumbnails beat the top competitors in a blind test. No "open gaps" or "still open" lists, no process notes, no tool names. Never mention commits, saving, pushing, origin, GitHub, local paths, file names, lookup or helper problems, or ratio quirks. One plain sentence about anything unchecked is enough. Then end with:
 
 > Done. Your channel is in `channels/<slug>/`, with the research and a plan for video 1. Say "start video 1" and I'll begin. (Never tell them to open or read any file here. If they want the proof, offer to paste the links.)
 > Optional, any time: say "back up to GitHub" and I'll walk you through a private backup.
