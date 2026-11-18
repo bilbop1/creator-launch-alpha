@@ -159,7 +159,7 @@ Never take "it's fixed" as an answer. Ask to see it, watch it, or measure it.
 
 ### 16. Review note, 2026-11-11, GeoGenius
 
-> never again show me a fucking frame sheet in place of video, dude. show me the video here in the cockpit dummy via like htmlplayer. plain player as clean as possible, lightweight not some kitsu embedded bullshit player type shit
+> never again show me a fucking frame sheet in place of video, dude. show me the video here in the [review page] dummy via like htmlplayer. plain player as clean as possible, lightweight not some [review tool] embedded bullshit player type shit
 
 **What it did:** Every review card now plays the real video in a plain player. A sheet of stills may sit under the video, never in its place, and the review tool refuses a still image sent as a video.
 

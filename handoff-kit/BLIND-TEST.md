@@ -2,7 +2,7 @@
 
 # Blind click tests and hill-climbing
 
-Nothing is locked until it wins a strict blind click test against the best competitor videos. This covers every script (its premise, title and opening), every thumbnail and every title, and every part of the picture and sound that a competitor also makes (section 7). A video that skips this is not ready to post.
+Nothing is locked until it wins a strict blind test against the best-performing competitor version. This covers the premise, the script, every title and thumbnail, the hook, every shot type, motion, pacing, the voice, music, captions, the platform copy (section 8) and the finished cut (section 7). A video that skips this is not ready to post. Skip a test only where no competitor makes that thing, and say so.
 
 This is the top priority of every session. The person should never open a review, or come back after an overnight run, and find work that was never climbed against the competition. Time goes into the climb before it goes into making more.
 
@@ -54,10 +54,19 @@ Thumbnail references come only from the most-viewed similar competitor videos: a
 
 One short block per design: the score, the number of pairs, the judge families, the strongest competitor and whether we beat it, and any title-alone loss. Never say "it won" without the numbers. Never show the person a design that has not passed.
 
-## 7. Picture, motion, sound and the finished cut
+## 7. Picture, motion, sound, captions and the finished cut
 
 The same loop applies to everything a competitor also makes: the opening seconds, each kind of shot, motion and transitions, pacing, the voice, the music and sound effects, captions and the finished video.
 - **Matched clips.** Cut ours and the best-performing competitor's comparable moment to the same length (for example the first 15 seconds, or one explainer beat). Judges watch the real video with sound at phone size, not frame sheets or descriptions.
 - **Same strict rules as section 1.** Pairwise, both orders, unlabeled, no story context, judges who did not make it, at least two model families when you can reach them. Ask "Which one would you keep watching?" and for the one concrete reason.
 - **Climb per element, as in section 3.** Fix exactly what the losing reasons name, retest against the same competitor clip, keep only what scores higher. Climb each shot or element while it is being built; never render the whole video blind and test only at the end.
 - **Overnight and unattended runs.** Spend the run climbing the weakest element first. The morning report leads with a scoreboard (each element, its score, the competitor clip it was tested against) and shows only work that passed, or the best version so far clearly marked "has not beaten the competition yet" with its numbers.
+
+## 8. Copy: descriptions, pinned comments, community posts, Shorts text, script voice
+- First it must pass `tools/copy_check.py` (the patterns on Wikipedia's "Signs of AI writing" page, `SIGNS-OF-AI-WRITING.md`), then `tools/copy_check.py style --ours <ours> --theirs research/parity/competitor_titles.txt` (or `competitor_descriptions.txt`): ours sits inside the most-viewed competitor copy's measured band for length, sentence rhythm, capitals, numbers, questions and how it opens.
+- Then the same strict pairwise test as section 1: ours against the most-viewed competitor's matching piece (their description against ours, their pinned comment against ours, their first 15 seconds of narration against ours), both orders, unlabeled, no story context, judges who did not write it, two model families when you can reach them. Ask "Which one sounds like a real creator you'd keep watching?" and for the one concrete reason. Titles are tested on feed cards (section 2).
+- Climb as in section 3. Copy that has not won is not final, and is shown with "has not beaten the competition yet".
+
+## 9. The scoreboard
+Every review, card and morning report starts with it, one line per element: the element, our score (wins of both-order pairs, judges, families), the competitor version it was tested against (link and views), and PASS or "has not beaten the competition yet". Elements with no competitor version say "no competitor makes this, not tested".
+

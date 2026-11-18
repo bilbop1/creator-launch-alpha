@@ -11,10 +11,11 @@ These are the answers to questions you must never ask. Every channel starts from
 - If the person states a smaller goal, keep their words as their own line in `CRITERIA.md`, and still build for the biggest scale unless they say "keep it small".
 - Source: kit author vision (Oct 2026, "premier money printing" setup); correction Nov 10, 2026, after a test run defaulted to side income.
 
-## 2. Faceless, and the agents do everything
-- The person never films, never talks on camera, never records their voice, never edits, never designs a thumbnail. Do not ask whether they would. Do not ask what they would hate doing.
+## 2. Faceless by default, and the agents do everything
+- If the person gives you nothing to edit, the channel is faceless and fully agent-made. If they hand you footage, talking-head recordings, screen recordings, their voice or old videos, the agents edit that to the parity target instead, and add made visuals where the target uses them.
+- The person never films new material for you, never talks on camera, never records their voice, never edits, never designs a thumbnail. Do not ask whether they would. Do not ask what they would hate doing.
 - Agents do all production: script, AI voice, visuals, animation, motion graphics, editing, thumbnails, titles, descriptions, upload prep. Pick the AI voice yourself by matching the best-performing competitor.
-- Only faceless formats that agents can fully produce are ever proposed: narrated explainers, animation, generated or licensed visuals, motion graphics, text on footage you are licensed to use. Anything that needs a human on camera, a human voice, real-world filming or hand editing is dropped before the person sees it.
+- With nothing to edit, only faceless formats that agents can fully produce are ever proposed: narrated explainers, animation, generated or licensed visuals, motion graphics, text on footage you are licensed to use. Anything that needs a human on camera, a human voice, real-world filming or hand editing is dropped before the person sees it.
 - The person does only: taste calls (what they love, which concept), account sign-ins that only they can do, and the go-ahead to publish, buy or message.
 - Source: kit author, Nov 10, 2026 ("it shouldn't ask the user if they want to talk on camera or edit... this is a faceless repo"); Oct 2026 standing rule that agents do everything and the human decides.
 
@@ -23,7 +24,8 @@ These are the answers to questions you must never ask. Every channel starts from
 - The only scheduling question allowed is how often they want to be checked in with. Default: only when a decision needs them, as one Deck card at a time.
 - Source: kit author, Nov 10, 2026.
 
-## 4. Parity first, then beat it
+## 4. Parity first, measured from their link, then beat it
+- The person's competitor link is the parity target. Infer the format (Shorts, Reels, long-form or a mix), the style (edit-only, 2D, 3D or a mix), the niche, pacing, voice and cadence from it and its top performers; never ask. `tools/parity.py build` measures the top performers against their own channel median and writes the spec; `tools/parity.py gate` enforces it in code on every video before review.
 - Copy the proven format of the outlier competitors, skeleton first: structure, escalation, pacing, point of view, visual grammar. Originality goes into the surface: wording, look, jokes, characters.
 - Model the absolute best performer for each dimension (titles, thumbnails, descriptions, tags, chapters, pacing, look, story), chosen by measured data, not by the channel name you happen to know. Combine the best patterns across top performers.
 - A format is proposed only with proof: at least 3 videos on at least 2 channels, each at 5x or more its own channel's median (median from at least 10 uploads), with real links, numbers and dates. Never invent a number.
@@ -31,7 +33,7 @@ These are the answers to questions you must never ask. Every channel starts from
 - Source: kit author, Oct 30 and Nov 8, 2026.
 
 ## 5. Quality bar: 98% competitor feel
-- The bar is how it feels next to the best competitor, not whether automatic checks pass. Look at frames, motion and audio at full size and side by side. Every defect found becomes a rule or a check before the next build.
+- The bar is how it feels next to the best competitor, not whether automatic checks pass. Review the real video at full size with sound, side by side with the competitor, never a frame sheet in its place, and give every note a clickable timestamp. Every defect found becomes a rule or a check before the next build.
 - Each video beats the previous one. After launch, real metrics (click rate, average view duration, percent viewed) re-weight the bar.
 - Source: kit author, Oct 28 and 30, 2026.
 
@@ -50,8 +52,8 @@ These are the answers to questions you must never ask. Every channel starts from
 - Source: kit author, Oct 23, Nov 2 and Nov 9, 2026.
 
 ## 9. Copy sounds human
-- Titles, descriptions, tags, pinned comments, community posts and video text sound like a specific person wrote them. Zero em dashes or en dashes, no curly quotes, no "not X, it's Y", no lists of three for rhythm, no AI vocabulary and no flattery.
-- Model them on the most-viewed comparable competitor, measured from public metadata. Chapters match the real video.
+- Titles, descriptions, tags, pinned comments, community posts, Shorts text, on-screen text and the script's voice sound like a specific person wrote them. They avoid every pattern on Wikipedia's "Signs of AI writing" page (https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), kept as a local checklist in `SIGNS-OF-AI-WRITING.md` and tested by `copy_check.py`. Zero em dashes or en dashes, no curly quotes, no "not X, it's Y", no lists of three for rhythm, no AI vocabulary and no flattery.
+- Avoiding AI tells is not enough. Match the measured style of the most-viewed comparable competitor copy (length, rhythm, vocabulary, structure, hook pattern): `python tools/copy_check.py style --ours <file> --theirs research/parity/competitor_titles.txt`. Then improve on it and win a strict blind pairwise test against their copy (`BLIND-TEST.md` section 8). Copy that has not won is not final. Chapters match the real video.
 - Never tell the person which tool or model writes it, and never name a model in anything they see.
 - If your environment has a humanizer or writing skill, run it. Then run `python tools/copy_check.py <file>` (in the channel folder, or `handoff-kit/templates/tools/copy_check.py`) and fix every hit. Read it back once out loud for AI tells before it is used.
 - Write copy with a different agent than the one that wrote the script when you can, and never let the writer grade its own copy.
@@ -76,7 +78,8 @@ These are the answers to questions you must never ask. Every channel starts from
 - The one score is published videos and their views. Anything that is not on the path to the next upload waits. No tooling, dashboards or side projects ahead of the next video.
 - Source: kit author, Nov 11, 2026.
 
-## 14. Strict blind click test before anything is locked
+## 14. Hill-climb first: strict blind tests before anything is locked
+- Top priority. Wherever a competitor makes the same thing (premise, script, title, thumbnail, hook, every shot type, motion, pacing, voice, music, captions, copy, the finished cut), ours is blind-tested against the best-performing competitor version and climbed until it wins: fix what the losing reasons name, keep only higher scores, climb while building, never render blind and test at the end. Picture and sound are judged as real video with sound at phone size. Overnight and unattended runs spend their time climbing; every review and morning report leads with the scoreboard, and anything that has not won says so.
 - Every script (premise, title, opening), every thumbnail and every title must win a strict blind click test against the top competitor videos before it is locked: mock mobile feed cards, pairwise, both orders, no story context, judges mostly from different model families, never the maker. A story-aware "relevance" ranking is not a test. Method and tool: `handoff-kit/BLIND-TEST.md`.
 - Titles and thumbnails are tested as a pair. When a competitor beats us on title alone, say so.
 - Each design improves on its own continuous loop (test, read the judges' reasons, fix exactly that, retest, keep only if it scores higher), all loops in parallel. Never batch rounds, never restart a design from scratch.
@@ -101,8 +104,16 @@ These are the answers to questions you must never ask. Every channel starts from
 - Before telling the person a helper agent or job "is working", check its status that same turn. If it died or stalled, say so and restart it.
 - Source: kit author, Nov 17, 2026 (an agent reported a lane "building" an hour after it had died).
 
+## 19. Learn the state of the art at every install
+- Before building, research how people are making this kind of video with Claude and agents right now, for this person's case: `tools/methods.py` finds many recent videos (last 90 days preferred), measures each against its uploader's own baseline, pulls transcripts (subtitles, a transcript library, then local Whisper), and you distill `METHODS.md`: techniques, tools, prompts and pipelines, each cited with URL, views and date, proven kept apart from claimed. Choose the pipeline from it. Refresh on a new format or after 30 days.
+- Source: kit author, Nov 18, 2026.
+
+## 20. The machine
+- Heavy work runs one job at a time, on the GPU path, at low priority, and never steals focus or opens a window over what the person is doing. Light work runs in parallel.
+- Source: kit author, Nov 7, 8 and 15, 2026.
+
 ## The only questions that are theirs
-What they love watching. What they are into or curious about. Their own words about success (default: item 1). Which of the 2 or 3 researched concepts they want. How often they want a check-in. Anything else is answered by this file.
+During setup, exactly two: what content they have for you to edit (default: nothing, fully agent-made and faceless), and at least one competitor link showing what the result should look like. After setup: which premise to start (your pick marked), taste calls on finished work, sign-ins, and the word "post". Anything else is answered by this file or measured.
 
 ## One long-form at a time
 Long-form videos are built one at a time, each finished to upload before the next one starts. All helper agents work inside that one video under one parent agent. Shorts are the exception: each Short can get its own helper and run in parallel. Source: kit author, Nov 11, 2026.

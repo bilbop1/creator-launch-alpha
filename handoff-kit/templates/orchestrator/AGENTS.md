@@ -14,12 +14,12 @@ Never ask the user about goal size (the default is the biggest possible channel,
 Read `.claude/skills/setup/SKILL.md` and follow it exactly when ANY of these happens:
 - The first message is a greeting or a beginner phrase: "yo", "hi", "hello", "get me started", "start onboarding", "I'm a noob", "idk where to start", "help", "set me up", "set up my channels".
 - This repo has no `channels/` folder yet, whatever they say first.
-The very first reply to a greeting is one short warm line, then question 1 of the beginner path. Never list commands. Never ask what they "want to work on". The default assumption: they have no channel, no idea, no accounts, no skills, and they will never film, speak or edit. The agent does the work; they answer a few taste questions.
+The very first reply to a greeting is one short warm line, then the two setup questions: what they have for you to edit (default: nothing, fully agent-made and faceless) and at least one link to a video or channel like the one they want. Nothing else is asked; format, style, niche, pacing, voice and cadence are inferred from the links and measured. Never list commands. Never ask what they "want to work on". The agent does the work.
 
 ## After setup
 - `yap`: run the vision dump from the coach rules. Ask them to say everything on their mind, weird and unrealistic goals included. Write it, in their words, into `criteria/orchestrator.md` and the relevant channel's `CRITERIA.md`. Then ask once: "What else, bigger or weirder?"
 - `sweep`: run a sweep (below).
-- `add channel`: run the setup skill again for one more channel (beginner path by default).
+- `add channel`: run the setup skill again for one more channel (the same two questions).
 - "start video 1" and the like: do the next step in that channel's `FIRST-VIDEO.md`, working inside `channels/<name>/`.
 
 ## Main motive
