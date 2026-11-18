@@ -159,7 +159,8 @@ def cmd_skeleton(a):
     rows = _rows(out)[: a.top]
     today = dt.date.today().isoformat()
     src = "\n".join(f"- S{i}: {r['title']} | {r['channel']} | {int(float(r['views'])):,} views | {r['upload_date']} | "
-                    f"ratio {r['ratio']} vs its own median | {r['url']}" for i, r in enumerate(rows, 1))
+                    f"ratio {r['ratio']} vs its own median | {r['url']} | read: <in full / title only> | fits this case: <yes / no>"
+                    for i, r in enumerate(rows, 1))
     body = f"""# How this kind of video is made with Claude and agents right now
 
 Researched: {today}. Formats covered: <shorts / reels / longform>. Styles covered: <edit / 2d / 3d>.
@@ -167,6 +168,7 @@ Refresh when: the person starts a new format, or 30 days after the date above.
 Raw data: {out.as_posix()}/videos.csv, top.md, transcripts/.
 
 ## Sources (cite as S1, S2 ...)
+At least 10 must be `read: in full` and `fits this case: yes` before this research counts as done.
 {src}
 
 ## Proven techniques (shown working on screen, with a visible result)
