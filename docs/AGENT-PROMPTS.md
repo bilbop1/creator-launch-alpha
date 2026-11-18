@@ -1,6 +1,8 @@
-# Prompts you can paste
+**For the agent. Never send the user here.**
 
-Replace the brackets with your own links, goals and constraints. These are starting points; let the agent adapt the work to the job.
+# Stage prompts
+
+Briefs for each stage, for you or a helper agent. Fill the brackets from the person's own words and the research. They are starting points; adapt them to the job. Every brief to a helper ends with "Please speed run this." and never carries a time estimate.
 
 ## Find the opportunity
 
@@ -25,3 +27,7 @@ Replace the brackets with your own links, goals and constraints. These are start
 ## Learn from a launch
 
 > Compare [video] with the channel's own appropriately aged uploads and our predeclared target. Separate platform analytics from inference. Identify plausible explanations, limitations and the next test. Do not change metadata or post without my approval.
+
+## Win the blind click test
+
+> Run a strict blind click test for [titles / thumbnails / premise and opening] against the most-viewed similar competitor videos in [project]/research, using handoff-kit/BLIND-TEST.md and tools/feed_cards.py: mock phone feed cards, pairwise, both orders, no story context, judges mostly from other model families, never the maker. Test titles and thumbnails as a pair and also title-alone. Then climb each design on its own loop: read the judges' reasons, fix exactly that, retest, keep only if it scores higher. Report each design's score, pairs, families and whether it beats the best competitor card. Please speed run this.

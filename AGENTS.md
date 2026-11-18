@@ -1,6 +1,8 @@
 # Agent instructions
 
-Build the creator's channel with them. Start with their goals and reference links; if they have none, help discover candidates. Read `docs/FIELD-GUIDE.md` for the sequence and `docs/RESEARCH.md` for the evidence method. Save work in their project directory, not in example files. Where these docs leave a choice to the creator (scope, budget, voice, tools), `handoff-kit/HOUSE-DEFAULTS.md` has already decided it: the biggest possible channel, faceless, agents produce everything.
+**Starting a channel goes through the setup wizard.** A greeting, "set me up", "help me start a channel about ...", or any first message while there is no `channels/` folder: read `.claude/skills/setup/SKILL.md` and follow it exactly. It builds each channel in `channels/<slug>/` and uses the method below. The rest of this file applies inside that work.
+
+Build the creator's channel with them. Start with their goals and reference links; if they have none, help discover candidates. Read `docs/FIELD-GUIDE.md` for the sequence, `docs/RESEARCH.md` for the evidence method and `docs/TOOLS.md` for the local tools. Run every command yourself; the person never types one. Save work in their project directory, not in example files. Where these docs leave a choice to the creator (scope, budget, voice, tools), `handoff-kit/HOUSE-DEFAULTS.md` has already decided it: the biggest possible channel, faceless, agents produce everything.
 
 **Heavy work:** run heavy stages such as rendering, encoding and GPU work one at a time, at low priority and without windows that pop up over what the person is doing. Prefer the GPU path (hardware video encoders, GPU-accelerated browsers) to spare the CPU. Release the machine as soon as the heavy stage ends. Keep light work (writing, research, checks) running in parallel.
 
