@@ -2,7 +2,9 @@
 
 # Local tools
 
-`launchkit` is standard-library Python. Start a private working project with `python -m launchkit init my-channel` (or `channels/<slug>/` when the setup wizard builds one). Live YouTube numbers come from `handoff-kit/templates/tools/yt_feed.py` (search channels, pull newest uploads with views and the ratio to the channel median; no key or login). Blind click tests use `handoff-kit/templates/tools/feed_cards.py`; platform copy is checked with `handoff-kit/templates/tools/copy_check.py`.
+`launchkit` is standard-library Python. Start a private working project with `python -m launchkit init my-channel` (or `channels/<slug>/` when the setup wizard builds one). Live YouTube numbers come from `handoff-kit/templates/tools/yt_feed.py` (search channels, pull newest uploads with views and the ratio to the channel median; no key or login). Blind click tests use `handoff-kit/templates/tools/feed_cards.py`; platform copy is checked with `handoff-kit/templates/tools/copy_check.py` (Wikipedia "Signs of AI writing" patterns, plus `copy_check.py style` against the most-viewed competitor copy).
+
+The measured parity spec and its gate: `handoff-kit/templates/tools/parity.py build <competitor links>` (top performers against their own channel median, niche peers, runtime, title shape, cuts per minute, loudness, words per minute, opponent cards and about 16 top-viewed thumbnails) and `parity.py gate` (fails our video outside the top performers' band or a long-form under 8:00). State-of-the-art research: `handoff-kit/templates/tools/methods.py scan | transcripts | skeleton | due` (recent videos about making videos with Claude and agents, ranked by views over the uploader's own median, transcripts by subtitles, a transcript library or local Whisper, and the `METHODS.md` skeleton). Both use yt-dlp, which they install on first use (free, no account), and run hidden at low priority.
 
 ## Run the example (synthetic data)
 

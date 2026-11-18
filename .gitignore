@@ -19,3 +19,8 @@ __pycache__/
 *.jpg
 *.jpeg
 *.zip
+.scratch/
+footage/
+*.local.md
+**/research/parity/clips/
+**/research/methods/transcripts/*.audio*
