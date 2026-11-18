@@ -2,7 +2,9 @@
 
 # Blind click tests and hill-climbing
 
-Nothing is locked until it wins a strict blind click test against the best competitor videos. This covers every script (its premise, title and opening), every thumbnail and every title. A video that skips this is not ready to post.
+Nothing is locked until it wins a strict blind click test against the best competitor videos. This covers every script (its premise, title and opening), every thumbnail and every title, and every part of the picture and sound that a competitor also makes (section 7). A video that skips this is not ready to post.
+
+This is the top priority of every session. The person should never open a review, or come back after an overnight run, and find work that was never climbed against the competition. Time goes into the climb before it goes into making more.
 
 ## 1. What counts as a test
 
@@ -51,3 +53,11 @@ Thumbnail references come only from the most-viewed similar competitor videos: a
 ## 6. Reporting a test to the person
 
 One short block per design: the score, the number of pairs, the judge families, the strongest competitor and whether we beat it, and any title-alone loss. Never say "it won" without the numbers. Never show the person a design that has not passed.
+
+## 7. Picture, motion, sound and the finished cut
+
+The same loop applies to everything a competitor also makes: the opening seconds, each kind of shot, motion and transitions, pacing, the voice, the music and sound effects, captions and the finished video.
+- **Matched clips.** Cut ours and the best-performing competitor's comparable moment to the same length (for example the first 15 seconds, or one explainer beat). Judges watch the real video with sound at phone size, not frame sheets or descriptions.
+- **Same strict rules as section 1.** Pairwise, both orders, unlabeled, no story context, judges who did not make it, at least two model families when you can reach them. Ask "Which one would you keep watching?" and for the one concrete reason.
+- **Climb per element, as in section 3.** Fix exactly what the losing reasons name, retest against the same competitor clip, keep only what scores higher. Climb each shot or element while it is being built; never render the whole video blind and test only at the end.
+- **Overnight and unattended runs.** Spend the run climbing the weakest element first. The morning report leads with a scoreboard (each element, its score, the competitor clip it was tested against) and shows only work that passed, or the best version so far clearly marked "has not beaten the competition yet" with its numbers.
