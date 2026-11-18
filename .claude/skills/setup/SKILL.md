@@ -33,7 +33,7 @@ Reply with ONE short warm line, then question 1 of the beginner path. If their f
 If they say they already have channels, skip to "Secondary path" below.
 
 ## Step 1: the beginner questions
-Ask question 1 first. After it is answered, ask 2 to 4 together in one message (skip any they already answered, keep the numbers 2 to 4 as they are), and end that message with this plain line, word for word: `Heads up: your computer may ask permission for me to search the web or run a small helper. Say yes (or "always allow") so I can keep going.` If they answered everything at once and you go straight to research, put that line first in your next reply.
+Ask question 1 first. After it is answered, ask 2 to 4 together in one message (skip any they already answered, and number what you ask 1, 2, 3 in that message), and end that message with this plain line, word for word: `Heads up: your computer may ask permission for me to search the web or run a small helper. Say yes (or "always allow") so I can keep going.` If they answered everything at once and you go straight to research, put that line first in your next reply.
 
 2. What are you into or curious about, any topic at all? Example: "space, money, cars, true crime, history". (default: you pick what's blowing up)
 3. Yap: what does a great year look like for this channel? Say it messy, weird or huge. Example: "a million subs", "quit my job", "a channel everyone knows". (default: the biggest channel possible, multi-million-dollar scale)
@@ -105,7 +105,7 @@ Verify it yourself, silently: the folders and files exist, `CRITERIA.md` has the
 
 > Done. <Channel name> is set up with the research and a plan for video 1: "<working title of the first idea>". Say go and I'll start making it, or name a different idea.
 
-(No file paths, no GitHub, no folder names. Never tell them to open or read any file. If they want the proof, offer to paste the links.) A "go", "ok", "sure" or "yes" to that one line approves that first idea by name and starts production right away, with no further questions: the agents make it and come back only with the blind-test result and the finished video. It never means post.
+(No file paths, no GitHub, no folder names. Never tell them to open or read any file. If they want the proof, offer to paste the links.) A "go", "ok", "sure" or "yes" to that one line approves that first idea by name and starts production right away, with no further questions: the agents make it and come back only with the blind-test result and the finished video. It never means post. Pick the voice, visual and render tools yourself and check them silently; if one is missing here, use the best available one or say in one plain line what you will use instead. Report progress, never tool gaps.
 
 Nothing after that.
 
