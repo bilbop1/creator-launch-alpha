@@ -42,7 +42,7 @@ Ask question 1 first. After it is answered, ask 2 to 4 together in one message (
 Do not add questions about camera, voice, editing, face, hours per week or how big to aim. Those are house defaults.
 
 Coach checks before moving on:
-- Missing or bare-ack items: one line, `Still need: 2, 4. Answer each in a few words, or say "2 default".`
+- Missing or bare-ack items: one line, `Still need: 2, 4. A few words each, or "idk" and I'll pick.` When you take a default, say so in a few words ("I'll pick the check-ins: only when I need you").
 - Q3 thin (under about 15 words): ask once, "What else is in your head, bigger or weirder?"
 - Q3 skipped or "default": the goal is the house goal, the biggest possible channel. Never write "side income".
 - A smaller goal ("side money", "just for fun"): keep their words as their own line in the criteria file, still build for the biggest scale, and say so in one line. Only "keep it small" turns the scale down.
@@ -103,8 +103,9 @@ Use `handoff-kit/criteria-template.md`. Copy its house-default block into `CRITE
 ## Step 5: verify, then hand over
 Verify it yourself, silently: the folders and files exist, `CRITERIA.md` has the goals in their words, the commit landed. If anything failed, say so first in plain words. Otherwise do not list files, commit hashes, tool names or internals to a beginner. Tell them in 3 to 5 plain lines: the channel name, what it will make, the proof it copies (one link), their goals in their own words (and that the aim is the biggest channel in the niche), and that the agents handle all production. Nothing is a to-do for them except taste calls, sign-ins and the word "post" when a finished video is ready. Say in one line that nothing is posted until titles and thumbnails beat the top competitors in a blind test. No "open gaps" or "still open" lists, no process notes, no tool names. Never mention commits, saving, pushing, origin, GitHub, local paths, file names, lookup or helper problems, or ratio quirks. One plain sentence about anything unchecked is enough. Then end with:
 
-> Done. Your channel is in `channels/<slug>/`, with the research and a plan for video 1. Say "start video 1" and I'll begin. (Never tell them to open or read any file here. If they want the proof, offer to paste the links.)
-> Optional, any time: say "back up to GitHub" and I'll walk you through a private backup.
+> Done. <Channel name> is set up with the research and a plan for video 1: "<working title of the first idea>". Say go and I'll start making it, or name a different idea.
+
+(No file paths, no GitHub, no folder names. Never tell them to open or read any file. If they want the proof, offer to paste the links.) A "go", "ok", "sure" or "yes" to that one line approves that first idea by name and starts production right away, with no further questions: the agents make it and come back only with the blind-test result and the finished video. It never means post.
 
 Nothing after that.
 
