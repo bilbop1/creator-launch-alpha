@@ -65,6 +65,27 @@ def top_of(chan: str, shorts: bool, n: int, k: int) -> tuple[list[dict], float |
     return rows[:k], med, len(views)
 
 
+def tab_reach(chan: str) -> dict:
+    """Per tab (shorts, longform): median views of recent uploads, uploads per day, and reach = median x per day."""
+    out = {}
+    for name, sh in (("shorts", True), ("longform", False)):
+        rows = ytkit.uploads(chan, sh, 15)
+        views = [r["view_count"] for r in rows if r.get("view_count")]
+        if len(views) < 3:
+            continue
+        ends = ytkit.details([rows[0]["id"], rows[-1]["id"]])
+        dates = sorted(d.get("upload_date") for d in ends if d.get("upload_date"))
+        per_day = None
+        if len(dates) == 2:
+            d0, d1 = (dt.date(int(x[:4]), int(x[4:6]), int(x[6:])) for x in dates)
+            per_day = (len(rows) - 1) / max(1, (d1 - d0).days)
+        med = float(statistics.median(views))
+        out[name] = {"median": int(med), "uploads_per_day": round(per_day, 3) if per_day else None,
+                     "reach": round(med * (per_day or 0))}
+    print(f"channel tabs: {out}", file=sys.stderr)
+    return out
+
+
 def band(vals: list[float]) -> dict:
     vals = sorted(v for v in vals if v is not None)
     if not vals:
@@ -133,15 +154,21 @@ def cmd_build(a):
         seeds.append(chan)
         if info:
             linked.append(info)
-    # format: from the linked videos, else from which tab of the first channel gets more views
-    if linked:
+    # format: --format wins; else a linked video's own format; else the channel tab with more reach
+    # (median views x uploads per day), because views per video alone hides a daily Shorts habit
+    tabs = tab_reach(seeds[0]) if not linked or a.format == "auto" else {}
+    mix = False
+    if a.format != "auto":
+        shorts = a.format == "shorts"
+    elif linked:
         shorts = sum(ytkit.is_short(x) for x in linked) * 2 >= len(linked)
     else:
-        v = sum(r.get("view_count") or 0 for r in ytkit.uploads(seeds[0], False, 15))
-        s = sum(r.get("view_count") or 0 for r in ytkit.uploads(seeds[0], True, 15))
-        shorts = s > v
+        rs, rl = tabs.get("shorts", {}).get("reach", 0), tabs.get("longform", {}).get("reach", 0)
+        shorts = rs >= rl
+        mix = min(rs, rl) >= 0.25 * max(rs, rl) > 0
     fmt = "shorts" if shorts else "longform"
-    print(f"format: {fmt}", file=sys.stderr)
+    other = "longform" if shorts else "shorts"
+    print(f"format: {fmt}" + (f" (the channel is a mix: run again with --format {other} --out <dir>-{other})" if mix else ""), file=sys.stderr)
     pool: dict[str, dict] = {}
     chan_stats = {}
     for chan in dict.fromkeys(seeds):
@@ -228,7 +255,8 @@ def cmd_build(a):
         if src:
             v, p = max(src, key=lambda t: t[1]["views"] or 0)
             best[key] = {"value": v, "video": p["url"], "views": p["views"]}
-    spec = {"observed": today, "format": fmt, "links": a.links, "niche_words": words,
+    spec = {"observed": today, "format": fmt, "mix": mix, "mix_other_format": other if mix else None,
+            "channel_tabs": tabs, "links": a.links, "niche_words": words,
             "channels": {str(c): {"median": int(m) if m else None, "median_from": n} for c, (m, n) in chan_stats.items()},
             "dimensions": dims, "best_performer_per_dimension": best,
             "rules": {"longform_min_s": LONGFORM_MIN_S if fmt == "longform" else None, "shorts_max_s": 180 if fmt == "shorts" else None},
@@ -253,6 +281,9 @@ def cmd_build(a):
                 except Exception:
                     continue
     md = [f"# Parity spec ({fmt}), measured {today}", "",
+          (f"The linked channel is a MIX: {other} also earns at least a quarter of its reach ({tabs}). Build the {other} spec too "
+           f"(`parity.py build ... --format {other} --out <this dir>-{other}`) and plan both formats, {fmt} first." if mix else
+           f"Channel tabs: {tabs}") if tabs else "", "",
           f"From: {', '.join(a.links)}. Niche search: {words!r}. {len(perf)} top performers (ratio {a.min_ratio}x+ against their own channel median).", "",
           "## Bands to hit (top performers; the gate fails anything outside p25 to p75)", "",
           "| dimension | p25 | median | p75 | best performer's value (views) |", "|---|---|---|---|---|"]
@@ -315,6 +346,7 @@ def main():
     b = sub.add_parser("build")
     b.add_argument("links", nargs="+")
     b.add_argument("--niche")
+    b.add_argument("--format", choices=["auto", "shorts", "longform"], default="auto")
     b.add_argument("--peers", type=int, default=6)
     b.add_argument("--uploads", type=int, default=40)
     b.add_argument("--per-channel", type=int, default=6)
