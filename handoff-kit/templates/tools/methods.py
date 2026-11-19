@@ -173,10 +173,10 @@ def cmd_skeleton(a):
 
 Researched: {today}. Formats covered: <shorts / reels / longform>. Styles covered: <edit / 2d / 3d>.
 Refresh when: the person starts a new format, or 30 days after the date above.
-Raw data: {out.as_posix()}/videos.csv, top.md, transcripts/.
+Raw data: research/methods/ (videos.csv, top.md, transcripts/) in this channel folder.
 
 ## Sources (cite as S1, S2 ...)
-At least 10 must be `read: in full` and `fits this case: yes` before this research counts as done.
+At least 10 must be `read: in full` and `fits this case: yes` before this research counts as done. "Fits" means the source shows an agent workflow for the SAME input (the person's kind of footage, or nothing) AND the same output (the measured format and style). A faceless-animation tutorial does not fit a talking-head edit, and an editing tutorial does not fit a 3D animation channel. A product ad never fits.
 {src}
 
 ## Proven techniques (shown working on screen, with a visible result)

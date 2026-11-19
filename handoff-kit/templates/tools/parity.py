@@ -221,7 +221,8 @@ def cmd_build(a):
             continue
         perf.append({"id": r["id"], "url": d.get("webpage_url"), "title": d.get("title"), "channel": d.get("channel"),
                      "views": d.get("view_count"), "upload_date": ytkit.fmt_date(d.get("upload_date")),
-                     "channel_median": r["channel_median"], "median_from": r["median_from"], "ratio": r["ratio"],
+                     "channel_median": r["channel_median"], "median_from": r["median_from"],
+                     "ratio": round((d.get("view_count") or 0) / r["channel_median"], 2) if r["channel_median"] else r["ratio"],
                      "from": r["from"], "duration_s": d.get("duration"), "description": d.get("description") or "",
                      "tags": d.get("tags") or [], "chapters": d.get("chapters") or [],
                      "thumbnail": d.get("thumbnail")})
