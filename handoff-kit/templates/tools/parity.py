@@ -347,6 +347,10 @@ def problems_of(spec: dict) -> list[str]:
         probs.append(f"{len(unreviewed)} top performers not reviewed: set \"on_niche\" to true or false and \"on_niche_why\" "
                      "(same kind of video as the person's target? news, macro commentary, ads, off-topic = false) in parity.json, "
                      "then run refresh")
+    whys = [(q.get("on_niche_why") or "").strip().lower() for q in perf if q.get("on_niche") is not None]
+    if whys and (len(set(whys)) < max(2, len(whys) // 2) or min(len(w) for w in whys) < 15):
+        probs.append("on_niche reasons look like one blanket rule: judge each video by its own title and say why in its own words "
+                     "(what it promises the viewer, and whether that is the person's kind of video)")
     if len({q["channel"] for q in perf}) < 2:
         probs.append("top performers come from a single channel (need at least 2)")
     fill = spec.get("to_fill_by_watching", {})
