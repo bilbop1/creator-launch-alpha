@@ -133,6 +133,16 @@ def measure_media(path: Path) -> dict:
     m = re.findall(r"I:\s+(-?[\d.]+) LUFS", r.stderr)
     if m:
         out["lufs"] = float(m[-1])
+    # share of near-silence: close to 0 means a music or sound bed runs under the voice the whole time
+    r = _run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(path), "-vn", "-af", "silencedetect=n=-45dB:d=0.25", "-f", "null", "-"])
+    sil = sum(float(x) for x in re.findall(r"silence_duration: ([\d.]+)", r.stderr))
+    if out["duration_s"]:
+        out["silence_share"] = round(sil / out["duration_s"], 3)
+    # 6 frames from the first 15 seconds, to look at the hook, captions and visual grammar
+    fdir = path.parent / "frames"
+    fdir.mkdir(exist_ok=True)
+    _run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(path), "-t", "15", "-vf", "fps=0.4",
+          str(fdir / f"{path.stem}_%02d.jpg")])
     return out
 
 
@@ -210,8 +220,10 @@ def cmd_build(a):
         for r in rows:
             pool.setdefault(r["id"], {**r, "from": "niche peer"})
     # keep real outliers with scale: ratio >= 2 against their own channel
-    top = [r for r in pool.values() if r.get("ratio", 0) >= a.min_ratio]
-    top.sort(key=lambda r: (r.get("view_count") or 0), reverse=True)
+    own = sorted((r for r in pool.values() if r["from"] == "linked channel"), key=lambda r: r.get("ratio", 0), reverse=True)
+    keep_own = {r["id"] for r in own[:6] if r.get("ratio", 0) >= 1.2}  # the target's own best 6 always count
+    top = [r for r in pool.values() if r.get("ratio", 0) >= a.min_ratio or r["id"] in keep_own]
+    top.sort(key=lambda r: (r["id"] in keep_own, r.get("view_count") or 0), reverse=True)
     top = top[: a.top]
     info = {d["id"]: d for d in ytkit.details([r["id"] for r in top])}
     perf = []
@@ -276,7 +288,7 @@ def cmd_build(a):
 
 FILL_KEYS = ["style", "voice", "pacing", "hook_pattern", "visual_grammar", "music", "captions"]
 DIM_KEYS = ["duration_s", "title_chars", "title_words", "title_caps_words", "title_has_number", "desc_chars", "tags",
-            "chapters", "cuts_per_min", "soft_cuts_per_min", "lufs", "wpm"]
+            "chapters", "cuts_per_min", "soft_cuts_per_min", "lufs", "silence_share", "wpm"]
 
 
 def perf_dims(p: dict) -> dict:
@@ -357,6 +369,14 @@ def problems_of(spec: dict) -> list[str]:
     empty = [k for k in FILL_KEYS if len((fill.get(k) or "").strip()) < 12 or (fill.get(k) or "").startswith("edit-only / 2d")]
     if empty:
         probs.append("watching notes missing or placeholder: " + ", ".join(empty))
+    soft = [k for k in FILL_KEYS if re.search(r"not (verified|heard|checked)|unknown|tbd", fill.get(k) or "", re.I)]
+    if soft:
+        probs.append("watching notes still unverified: " + ", ".join(soft) + ". Use the evidence you have: the hook frames in "
+                     "clips/frames/ (captions, layout, visual grammar), silence_share and lufs (a share near 0 = a music bed under "
+                     "the voice), the transcripts (voice, pacing), and write what you found")
+    linked_rows = [q for q in perf if q.get("from") == "linked channel"]
+    if spec.get("links") and len(linked_rows) < 3:
+        probs.append(f"only {len(linked_rows)} kept rows from the channel the person linked (need 3): rerun build with --per-channel 12 and keep its best on-niche videos")
     if not any((q.get("media") or {}) for q in perf):
         probs.append("no picture and sound measures (run build with --measure 3, ffmpeg needed)")
     return probs

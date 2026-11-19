@@ -194,8 +194,8 @@ At least 10 must be `read: in full` and `fits this case: yes` before this resear
 ## Our pipeline for this channel, and why
 - <stage>: <choice>, because <which proven source and what it beat>.
 
-## What we will test before trusting it
-- <claim to check>, how we check it.
+## Gaps: what no source shows for this exact case, and how we test it first
+- <gap>: <the small test we run before relying on it>.
 """
     dst = Path(a.file)
     if dst.exists() and not a.force:
@@ -222,9 +222,9 @@ def cmd_check(a):
         m = re.search(k + r" *(.*)", t)
         if not m or "<" in m.group(1):
             probs.append(f"'{k}' line not filled")
-    for sec in ("## Proven techniques", "## Our pipeline for this channel"):
+    for sec in ("## Proven techniques", "## Our pipeline for this channel", "## Gaps"):
         body = t.split(sec, 1)[1].split("\n## ", 1)[0] if sec in t else ""
-        if not body.strip() or "<technique>" in body or "<stage>" in body:
+        if not body.strip() or "<technique>" in body or "<stage>" in body or "<gap>" in body:
             probs.append(f"section '{sec[3:]}' not filled")
     for x in probs:
         print("PROBLEM: " + x)
