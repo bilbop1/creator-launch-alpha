@@ -316,9 +316,13 @@ def write_outputs(spec: dict, out: Path):
     (out / "parity.json").write_text(json.dumps(spec, indent=1), encoding="utf-8")
     (out / "competitor_titles.txt").write_text("\n".join(q["title"] for q in perf) + "\n", encoding="utf-8")
     (out / "competitor_descriptions.txt").write_text("\n\n=====\n\n".join(q.get("description", "") for q in perf) + "\n", encoding="utf-8")
+    # opponents: up to half from the channel the person linked (their target), the rest the most-viewed peers
+    own = [q for q in perf if q.get("from") == "linked channel"][:5]
+    rest = [q for q in perf if q not in own][: 10 - len(own)]
+    picked = sorted(own + rest, key=lambda q: q["views"] or 0, reverse=True)
     cards = [{"id": f"comp-{i}", "side": "comp", "title": q["title"], "thumb": f"thumb-refs/{q['id']}.jpg",
               "channel": q["channel"], "views": _short(q["views"]), "views_n": q["views"],
-              "age": q["upload_date"], "url": q["url"]} for i, q in enumerate(perf[:10], 1)]
+              "age": q["upload_date"], "url": q["url"]} for i, q in enumerate(picked, 1)]
     (out / "cards.json").write_text(json.dumps(cards, indent=1), encoding="utf-8")
     fmt, tabs = spec["format"], spec.get("channel_tabs") or {}
     other = spec.get("mix_other_format")
@@ -359,8 +363,16 @@ def problems_of(spec: dict) -> list[str]:
         probs.append(f"{len(unreviewed)} top performers not reviewed: set \"on_niche\" to true or false and \"on_niche_why\" "
                      "(same kind of video as the person's target? news, macro commentary, ads, off-topic = false) in parity.json, "
                      "then run refresh")
-    whys = [(q.get("on_niche_why") or "").strip().lower() for q in perf if q.get("on_niche") is not None]
-    if whys and (len(set(whys)) < max(2, len(whys) // 2) or min(len(w) for w in whys) < 15):
+    def _core(q):  # the reason with the video's own title words removed, to catch one template reused on every row
+        w = (q.get("on_niche_why") or "").lower()
+        w = re.sub(r"'[^']{6,}'|\"[^\"]{6,}\"", " ", w)  # quoted titles
+        for t in re.findall(r"[a-z0-9$']+", (q.get("title") or "").lower()):
+            w = re.sub(r"\b" + re.escape(t) + r"\b", "", w)
+        return re.sub(r"[^a-z]+", " ", w).strip()
+    whys = [_core(q) for q in perf if q.get("on_niche") is not None]
+    from collections import Counter as _C
+    top_share = (_C(whys).most_common(1)[0][1] / len(whys)) if whys else 0
+    if whys and (top_share >= 0.3 or len(set(whys)) < max(2, (len(whys) * 2) // 3) or min(len(w) for w in whys) < 12):
         probs.append("on_niche reasons look like one blanket rule: judge each video by its own title and say why in its own words "
                      "(what it promises the viewer, and whether that is the person's kind of video)")
     if len({q["channel"] for q in perf}) < 2:
