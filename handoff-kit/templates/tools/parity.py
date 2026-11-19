@@ -12,6 +12,12 @@ present. Every subprocess runs hidden and at low priority.
       (with --measure N) cuts per minute, loudness and words per minute from the real videos.
       Writes <out>/parity.json, PARITY.md, competitor_titles.txt, competitor_descriptions.txt,
       cards.json (opponent cards for feed_cards.py) and thumb-refs/ (about 16 most-viewed thumbnails).
+  python parity.py refresh research/parity [--drop-channel "Name"] [--drop-id VIDEOID]
+      Drops off-niche rows, recomputes every band and the cards, and rewrites PARITY.md with the watching
+      notes you filled into parity.json. Run it after every edit to parity.json.
+  python parity.py check research/parity
+      Exit 1 unless the spec is ready: 6+ top performers from 2+ channels, every watching note filled,
+      picture and sound measured. Run it before showing the person the plan.
   python parity.py gate research/parity/parity.json [--video ours.mp4] [--title "..."] [--description d.txt]
                         [--transcript t.txt] [--tags "a,b,c"]
       Measures ours and fails (exit 1) on every dimension outside the top performers' band, and on a
@@ -117,8 +123,12 @@ def measure_media(path: Path) -> dict:
     r = _run(["ffmpeg", "-hide_banner", "-nostats", "-hwaccel", "auto", "-i", str(path), "-an",
               "-vf", "scale=160:-2,select='gt(scene,0.3)',showinfo", "-f", "null", "-"])
     cuts = len(re.findall(r"pts_time:", r.stderr))
+    r2 = _run(["ffmpeg", "-hide_banner", "-nostats", "-hwaccel", "auto", "-i", str(path), "-an",
+               "-vf", "scale=160:-2,select='gt(scene,0.15)',showinfo", "-f", "null", "-"])
+    soft = len(re.findall(r"pts_time:", r2.stderr))
     if out["duration_s"]:
         out["cuts_per_min"] = round(cuts / (out["duration_s"] / 60), 1)
+        out["soft_cuts_per_min"] = round(soft / (out["duration_s"] / 60), 1)
     r = _run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(path), "-vn", "-af", "ebur128", "-f", "null", "-"])
     m = re.findall(r"I:\s+(-?[\d.]+) LUFS", r.stderr)
     if m:
@@ -238,68 +248,136 @@ def cmd_build(a):
                 p["transcript_method"] = how
                 if tx and p.get("duration_s"):
                     p["wpm"] = round(len(tx.split()) / (p["duration_s"] / 60), 1)
-    per = []
-    for p in perf:
-        x = text_dims(p["title"], p["description"], p["tags"], p["chapters"], None, None)
-        x["duration_s"] = p.get("duration_s")
-        x.update({k: v for k, v in p.get("media", {}).items() if k != "duration_s"})
-        x["wpm"] = p.get("wpm")
-        per.append({k: v for k, v in x.items() if v is not None})
-    keys = ["duration_s", "title_chars", "title_words", "title_caps_words", "title_has_number", "desc_chars", "tags",
-            "chapters", "cuts_per_min", "lufs", "wpm"]
-    dims = {k: band([x.get(k) for x in per]) for k in keys}
-    dims = {k: v for k, v in dims.items() if v}
-    best = {}
-    for key in dims:  # the single most-viewed top performer that has this measure
-        src = [(x[key], p) for x, p in zip(per, perf) if key in x]
-        if src:
-            v, p = max(src, key=lambda t: t[1]["views"] or 0)
-            best[key] = {"value": v, "video": p["url"], "views": p["views"]}
     spec = {"observed": today, "format": fmt, "mix": mix, "mix_other_format": other if mix else None,
-            "channel_tabs": tabs, "links": a.links, "niche_words": words,
+            "channel_tabs": tabs, "links": a.links, "niche_words": words, "min_ratio": a.min_ratio,
             "channels": {str(c): {"median": int(m) if m else None, "median_from": n} for c, (m, n) in chan_stats.items()},
-            "dimensions": dims, "best_performer_per_dimension": best,
             "rules": {"longform_min_s": LONGFORM_MIN_S if fmt == "longform" else None, "shorts_max_s": 180 if fmt == "shorts" else None},
-            "to_fill_by_watching": {"style": "edit-only / 2d / 3d / mix", "voice": "", "pacing": "", "hook_pattern": "",
-                                    "visual_grammar": "", "music": "", "captions": ""},
-            "top_performers": [{k: v for k, v in p.items() if k not in ("description",)} for p in perf]}
-    (out / "parity.json").write_text(json.dumps(spec, indent=1), encoding="utf-8")
-    (out / "competitor_titles.txt").write_text("\n".join(p["title"] for p in perf) + "\n", encoding="utf-8")
-    (out / "competitor_descriptions.txt").write_text("\n\n=====\n\n".join(p["description"] for p in perf) + "\n", encoding="utf-8")
-    cards = [{"id": f"comp-{i}", "side": "comp", "title": p["title"], "thumb": f"thumb-refs/{p['id']}.jpg",
-              "channel": p["channel"], "views": _short(p["views"]), "views_n": p["views"],
-              "age": p["upload_date"], "url": p["url"]} for i, p in enumerate(perf[:10], 1)]
-    (out / "cards.json").write_text(json.dumps(cards, indent=1), encoding="utf-8")
-    for p in perf[:16]:
-        dst = out / "thumb-refs" / f"{p['id']}.jpg"
+            "to_fill_by_watching": {k: "" for k in FILL_KEYS},
+            "top_performers": perf}
+    for q in perf[:16]:
+        dst = out / "thumb-refs" / f"{q['id']}.jpg"
         if not dst.exists():
             for name in ("maxresdefault", "hqdefault"):
                 try:
-                    with urllib.request.urlopen(f"https://i.ytimg.com/vi/{p['id']}/{name}.jpg", timeout=30) as resp:
+                    with urllib.request.urlopen(f"https://i.ytimg.com/vi/{q['id']}/{name}.jpg", timeout=30) as resp:
                         dst.write_bytes(resp.read())
                     break
                 except Exception:
                     continue
-    md = [f"# Parity spec ({fmt}), measured {today}", "",
-          (f"The linked channel is a MIX: {other} also earns at least a quarter of its reach ({tabs}). Build the {other} spec too "
-           f"(`parity.py build ... --format {other} --out <this dir>-{other}`) and plan both formats, {fmt} first." if mix else
-           f"Channel tabs: {tabs}") if tabs else "", "",
-          f"From: {', '.join(a.links)}. Niche search: {words!r}. {len(perf)} top performers (ratio {a.min_ratio}x+ against their own channel median).", "",
-          "## Bands to hit (top performers; the gate fails anything outside p25 to p75)", "",
-          "| dimension | p25 | median | p75 | best performer's value (views) |", "|---|---|---|---|---|"]
+    write_outputs(spec, out)
+    print(f"wrote {out}/parity.json, PARITY.md, cards.json, thumb-refs/ ({len(perf)} top performers)", file=sys.stderr)
+    print("NEXT: read the top performers, drop off-niche channels with `parity.py refresh <dir> --drop-channel \"Name\"`, "
+          "fill to_fill_by_watching in parity.json, run `parity.py refresh <dir>` and then `parity.py check <dir>`.", file=sys.stderr)
+    if len(perf) < 6:
+        print("WARNING: under 6 top performers. Add more links, --niche words, --peers 10 or --min-ratio 1.5.", file=sys.stderr)
+
+
+FILL_KEYS = ["style", "voice", "pacing", "hook_pattern", "visual_grammar", "music", "captions"]
+DIM_KEYS = ["duration_s", "title_chars", "title_words", "title_caps_words", "title_has_number", "desc_chars", "tags",
+            "chapters", "cuts_per_min", "soft_cuts_per_min", "lufs", "wpm"]
+
+
+def perf_dims(p: dict) -> dict:
+    x = text_dims(p.get("title"), p.get("description", ""), p.get("tags") or [], p.get("chapters") or [], None, None)
+    x["duration_s"] = p.get("duration_s")
+    x.update({k: v for k, v in (p.get("media") or {}).items() if k != "duration_s"})
+    x["wpm"] = p.get("wpm")
+    return {k: v for k, v in x.items() if v is not None}
+
+
+def write_outputs(spec: dict, out: Path):
+    """(Re)compute bands and best performers from spec["top_performers"]; write every output file."""
+    perf = spec["top_performers"]
+    per = [perf_dims(q) for q in perf]
+    dims = {k: band([x.get(k) for x in per]) for k in DIM_KEYS}
+    dims = {k: v for k, v in dims.items() if v}
+    best = {}
+    for key in dims:  # the single most-viewed top performer that has this measure
+        src = [(x[key], q) for x, q in zip(per, perf) if key in x]
+        if src:
+            v, q = max(src, key=lambda t: t[1]["views"] or 0)
+            best[key] = {"value": v, "video": q["url"], "views": q["views"]}
+    spec["dimensions"] = dims
+    spec["best_performer_per_dimension"] = best
+    (out / "parity.json").write_text(json.dumps(spec, indent=1), encoding="utf-8")
+    (out / "competitor_titles.txt").write_text("\n".join(q["title"] for q in perf) + "\n", encoding="utf-8")
+    (out / "competitor_descriptions.txt").write_text("\n\n=====\n\n".join(q.get("description", "") for q in perf) + "\n", encoding="utf-8")
+    cards = [{"id": f"comp-{i}", "side": "comp", "title": q["title"], "thumb": f"thumb-refs/{q['id']}.jpg",
+              "channel": q["channel"], "views": _short(q["views"]), "views_n": q["views"],
+              "age": q["upload_date"], "url": q["url"]} for i, q in enumerate(perf[:10], 1)]
+    (out / "cards.json").write_text(json.dumps(cards, indent=1), encoding="utf-8")
+    fmt, tabs = spec["format"], spec.get("channel_tabs") or {}
+    other = spec.get("mix_other_format")
+    md = [f"# Parity spec ({fmt}), measured {spec['observed']}", ""]
+    if spec.get("mix"):
+        md += [f"The linked channel is a MIX: {other} also earns at least a quarter of its reach ({tabs}). Build the {other} spec too "
+               f"(`parity.py build ... --format {other} --out <this dir>-{other}`) and plan both formats, {fmt} first.", ""]
+    elif tabs:
+        md += [f"Channel tabs (median views, uploads per day, reach): {tabs}", ""]
+    md += [f"From: {', '.join(spec['links'])}. Niche words: {spec['niche_words']!r}. {len(perf)} top performers "
+           f"(ratio {spec.get('min_ratio', 2.0)}x+ against their own channel median).", ""]
+    if spec.get("dropped"):
+        md += [f"Dropped as off-niche: {', '.join(spec['dropped'])}.", ""]
+    md += ["## What the top performers look and sound like (watched)", ""]
+    for k in FILL_KEYS:
+        md.append(f"- **{k}:** {spec.get('to_fill_by_watching', {}).get(k) or 'NOT FILLED YET'}")
+    md += ["", "## Bands to hit (top performers; the gate fails anything outside p25 to p75)", "",
+           "| dimension | p25 | median | p75 | best performer's value (views) |", "|---|---|---|---|---|"]
     for k, v in dims.items():
         b = best.get(k, {})
         md.append(f"| {k} | {v['p25']} | {v['median']} | {v['p75']} | {b.get('value')} ({b.get('views')}) |")
-    md += ["", "## Top performers", "", "| views | ratio | median (uploads) | date | channel | title | link |", "|---|---|---|---|---|---|---|"]
-    for p in perf:
-        md.append(f"| {p['views']:,} | {p['ratio']} | {p['channel_median']} ({p['median_from']}) | {p['upload_date']} | {p['channel']} | "
-                  f"{(p['title'] or '').replace('|', '/')} | {p['url']} |")
-    md += ["", "## Still to fill by watching the top 3 with sound (write it into parity.json too)",
-           "style (edit-only, 2D, 3D or a mix), voice, pacing, hook pattern, visual grammar, music, captions."]
+    md += ["", "cuts_per_min counts hard cuts (scene score above 0.3); soft_cuts_per_min also counts big camera moves and "
+           "transitions (above 0.15). Smooth animation can show 0 hard cuts: then pace against soft cuts.", "",
+           "## Top performers", "", "| views | ratio | median (uploads) | date | channel | title | link |", "|---|---|---|---|---|---|---|"]
+    for q in perf:
+        md.append(f"| {q['views']:,} | {q['ratio']} | {q['channel_median']} ({q['median_from']}) | {q['upload_date']} | {q['channel']} | "
+                  f"{(q['title'] or '').replace('|', '/')} | {q['url']} |")
     (out / "PARITY.md").write_text("\n".join(md) + "\n", encoding="utf-8")
-    print(f"wrote {out}/parity.json, PARITY.md, cards.json, thumb-refs/ ({len(perf)} top performers)", file=sys.stderr)
+
+
+def problems_of(spec: dict) -> list[str]:
+    probs = []
+    perf = spec.get("top_performers", [])
     if len(perf) < 6:
-        print("WARNING: under 6 top performers. Add more links, --niche words or --min-ratio 1.5.", file=sys.stderr)
+        probs.append(f"only {len(perf)} top performers (need 6 on-niche)")
+    if len({q["channel"] for q in perf}) < 2:
+        probs.append("top performers come from a single channel (need at least 2)")
+    fill = spec.get("to_fill_by_watching", {})
+    empty = [k for k in FILL_KEYS if len((fill.get(k) or "").strip()) < 12 or (fill.get(k) or "").startswith("edit-only / 2d")]
+    if empty:
+        probs.append("watching notes missing or placeholder: " + ", ".join(empty))
+    if not any((q.get("media") or {}) for q in perf):
+        probs.append("no picture and sound measures (run build with --measure 3, ffmpeg needed)")
+    return probs
+
+
+def cmd_refresh(a):
+    out = Path(a.dir)
+    spec = json.loads((out / "parity.json").read_text(encoding="utf-8"))
+    drop_c = {c.lower() for c in a.drop_channel or []}
+    drop_i = set(a.drop_id or [])
+    keep, gone = [], []
+    for q in spec["top_performers"]:
+        if (q.get("channel") or "").lower() in drop_c or q["id"] in drop_i:
+            gone.append(f"{q.get('channel')}: {q.get('title')}")
+        else:
+            keep.append(q)
+    spec["top_performers"] = keep
+    if drop_c:
+        spec["dropped"] = sorted(set(spec.get("dropped", [])) | {c for c in a.drop_channel})
+    write_outputs(spec, out)
+    print(f"dropped {len(gone)}, {len(keep)} top performers remain; bands, cards and PARITY.md rewritten", file=sys.stderr)
+    for p_ in problems_of(spec):
+        print("PROBLEM: " + p_, file=sys.stderr)
+
+
+def cmd_check(a):
+    spec = json.loads((Path(a.dir) / "parity.json").read_text(encoding="utf-8"))
+    probs = problems_of(spec)
+    for p_ in probs:
+        print("PROBLEM: " + p_)
+    print("parity spec ready" if not probs else f"{len(probs)} problem(s): fix them before showing the plan")
+    sys.exit(1 if probs else 0)
 
 
 def _short(n):
@@ -349,12 +427,20 @@ def main():
     b.add_argument("--format", choices=["auto", "shorts", "longform"], default="auto")
     b.add_argument("--peers", type=int, default=6)
     b.add_argument("--uploads", type=int, default=40)
-    b.add_argument("--per-channel", type=int, default=6)
+    b.add_argument("--per-channel", type=int, default=8)
     b.add_argument("--min-ratio", type=float, default=2.0)
     b.add_argument("--top", type=int, default=24)
     b.add_argument("--measure", type=int, default=0, help="download and measure the N most-viewed top performers")
     b.add_argument("--out", default="research/parity")
     b.set_defaults(fn=cmd_build)
+    r = sub.add_parser("refresh", help="drop off-niche rows, recompute bands, rewrite PARITY.md with the watching notes")
+    r.add_argument("dir")
+    r.add_argument("--drop-channel", action="append")
+    r.add_argument("--drop-id", action="append")
+    r.set_defaults(fn=cmd_refresh)
+    c = sub.add_parser("check", help="exit 1 unless the spec is ready: 6+ on-niche top performers, 2+ channels, notes filled, media measured")
+    c.add_argument("dir")
+    c.set_defaults(fn=cmd_check)
     g = sub.add_parser("gate")
     g.add_argument("spec")
     g.add_argument("--video")

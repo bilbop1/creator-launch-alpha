@@ -10,13 +10,16 @@ new format or when `due` says the research is stale. Standard library plus yt-dl
       against its uploader's own baseline (median views of their recent uploads) and writes
       <out>/videos.csv and <out>/top.md ranked by that ratio. "Viral" = high views against the uploader's own
       median, recent, and many videos, never 2 or 3.
-  python methods.py transcripts [--top 25] [--out research/methods]
+  python methods.py transcripts [--top 25 | --ids ID ID ...] [--out research/methods]
       Pulls transcripts of the top videos into <out>/transcripts/<id>.txt (subtitles, then a transcript
       library, then local Whisper as the fallback) and records the method used per video.
   python methods.py skeleton [--out research/methods] [--file METHODS.md]
       Writes the METHODS.md skeleton with every source cited (URL, views, date, ratio). You then watch or
       read the transcripts and fill in the techniques, separating PROVEN (shown working on screen with a
       result) from CLAIMED (said, not shown).
+  python methods.py check METHODS.md
+      Exit 1 unless at least 10 sources are marked "read: in full" and "fits this case: yes" and the
+      proven-techniques and pipeline sections are filled. Run it before showing the person the plan.
   python methods.py due METHODS.md [--days 30] [--format shorts]
       Exit 0 if the research is fresh and covers that format, 1 if it must be refreshed.
 
@@ -41,17 +44,21 @@ BASE = [
     "automate youtube channel with ai agents", "claude code remotion", "claude skills video", "codex video editing",
 ]
 BY_FORMAT = {
-    "shorts": ["claude code youtube shorts", "ai youtube shorts automation", "ai shorts editing agent", "faceless shorts ai"],
+    "shorts": ["claude code youtube shorts", "ai youtube shorts automation", "ai shorts editing agent", "faceless shorts ai",
+               "make viral shorts with claude", "ai animated shorts workflow", "claude shorts full workflow"],
     "reels": ["ai instagram reels editing", "claude reels automation"],
     "longform": ["claude code long form youtube video", "ai documentary youtube channel", "ai long form video editing",
-                 "faceless youtube long form ai"],
+                 "faceless youtube long form ai", "claude code edit full youtube video", "ai edit 20 minute youtube video"],
 }
 BY_STYLE = {
     "edit": ["claude code edit talking head", "ai edit my raw footage", "ai video editor agent", "claude code premiere davinci",
-             "auto edit podcast clips ai"],
+             "auto edit podcast clips ai", "claude code cut silences and retakes", "ai edit talking head youtube video",
+             "claude code b-roll captions edit", "automate youtube editing with claude code"],
     "2d": ["claude code motion graphics", "ai 2d animation youtube", "claude code animated explainer", "hyperframes video",
            "ai whiteboard animation channel"],
-    "3d": ["claude code blender", "ai 3d animation youtube", "claude code three.js video", "ai 3d explainer video"],
+    "3d": ["claude code blender", "ai 3d animation youtube", "claude code three.js video", "ai 3d explainer video",
+           "claude 3d animated shorts", "ai 3d animation shorts tutorial", "blender mcp claude animation",
+           "make 3d animations with claude", "ai 3d story shorts"],
 }
 FIELDS = ["video_id", "url", "title", "channel", "channel_id", "views", "upload_date", "duration_s", "is_short",
           "channel_median", "median_from", "ratio", "query", "observed"]
@@ -133,7 +140,8 @@ def _rows(out: Path) -> list[dict]:
 def cmd_transcripts(a):
     out = Path(a.out)
     tdir = out / "transcripts"
-    rows = _rows(out)[: a.top]
+    rows = _rows(out)
+    rows = [r for r in rows if r["video_id"] in set(a.ids)] if a.ids else rows[: a.top]
     log = []
 
     def one(r):
@@ -197,6 +205,33 @@ At least 10 must be `read: in full` and `fits this case: yes` before this resear
     print(f"wrote {dst}", file=sys.stderr)
 
 
+def cmd_check(a):
+    p = Path(a.file)
+    if not p.exists():
+        sys.exit("check: no methods file yet")
+    t = p.read_text(encoding="utf-8")
+    src = [l for l in t.splitlines() if re.match(r"- S\d+:", l)]
+    full_fit = [l for l in src if re.search(r"read: *in full", l, re.I) and re.search(r"fits this case: *yes", l, re.I)]
+    probs = []
+    if len(full_fit) < a.need:
+        probs.append(f"{len(full_fit)} sources are read in full AND fit this case (need {a.need}); read more, or scan again with --query for this exact case")
+    unmarked = [l.split(":")[0] for l in src if "<in full" in l or "<yes" in l]
+    if unmarked:
+        probs.append("sources still unmarked: " + " ".join(s_[2:] for s_ in unmarked[:12]))
+    for k in ("Formats covered:", "Styles covered:"):
+        m = re.search(k + r" *(.*)", t)
+        if not m or "<" in m.group(1):
+            probs.append(f"'{k}' line not filled")
+    for sec in ("## Proven techniques", "## Our pipeline for this channel"):
+        body = t.split(sec, 1)[1].split("\n## ", 1)[0] if sec in t else ""
+        if not body.strip() or "<technique>" in body or "<stage>" in body:
+            probs.append(f"section '{sec[3:]}' not filled")
+    for x in probs:
+        print("PROBLEM: " + x)
+    print("methods research ready" if not probs else f"{len(probs)} problem(s)")
+    sys.exit(1 if probs else 0)
+
+
 def cmd_due(a):
     p = Path(a.file)
     if not p.exists():
@@ -234,6 +269,7 @@ def main():
     s.set_defaults(fn=cmd_scan)
     t = sub.add_parser("transcripts")
     t.add_argument("--top", type=int, default=25)
+    t.add_argument("--ids", nargs="*", help="pull these video ids (from videos.csv) instead of the top N")
     t.add_argument("--out", default="research/methods")
     t.set_defaults(fn=cmd_transcripts)
     k = sub.add_parser("skeleton")
@@ -242,6 +278,10 @@ def main():
     k.add_argument("--file", default="METHODS.md")
     k.add_argument("--force", action="store_true")
     k.set_defaults(fn=cmd_skeleton)
+    c = sub.add_parser("check", help="exit 1 unless 10+ sources are read in full and fit this case, and the sections are filled")
+    c.add_argument("file")
+    c.add_argument("--need", type=int, default=10)
+    c.set_defaults(fn=cmd_check)
     d = sub.add_parser("due")
     d.add_argument("file")
     d.add_argument("--days", type=int, default=30)
