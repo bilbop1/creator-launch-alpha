@@ -225,7 +225,7 @@ def cmd_build(a):
                      "ratio": round((d.get("view_count") or 0) / r["channel_median"], 2) if r["channel_median"] else r["ratio"],
                      "from": r["from"], "duration_s": d.get("duration"), "description": d.get("description") or "",
                      "tags": d.get("tags") or [], "chapters": d.get("chapters") or [],
-                     "thumbnail": d.get("thumbnail")})
+                     "thumbnail": d.get("thumbnail"), "on_niche": None, "on_niche_why": ""})
     # real picture and sound measures on the best few
     if a.measure and perf:
         cdir = out / "clips"
@@ -237,7 +237,8 @@ def cmd_build(a):
                 (out / "transcripts" / f"{p['id']}.txt").write_text(tx, encoding="utf-8")
             dst = cdir / f"{p['id']}.mp4"
             if not dst.exists():
-                _run(ytkit.ytdlp() + ["--no-warnings", "-f", ytkit.SMALL_VIDEO, "--merge-output-format", "mp4",
+                sect = [] if shorts else ["--download-sections", "*0-360"]  # long-form: the first 6 minutes are enough
+                _run(ytkit.ytdlp() + ["--no-warnings", "-f", ytkit.SMALL_VIDEO, "--merge-output-format", "mp4", *sect,
                                       "-o", str(dst), p["url"]], timeout=3600)
             m = measure_media(dst) if dst.exists() else {}
             return p["id"], m, tx, how
@@ -267,8 +268,8 @@ def cmd_build(a):
                     continue
     write_outputs(spec, out)
     print(f"wrote {out}/parity.json, PARITY.md, cards.json, thumb-refs/ ({len(perf)} top performers)", file=sys.stderr)
-    print("NEXT: read the top performers, drop off-niche channels with `parity.py refresh <dir> --drop-channel \"Name\"`, "
-          "fill to_fill_by_watching in parity.json, run `parity.py refresh <dir>` and then `parity.py check <dir>`.", file=sys.stderr)
+    print("NEXT: in parity.json set on_niche true/false (+ on_niche_why) on EVERY top performer, fill to_fill_by_watching, "
+          "then `parity.py refresh <dir>` (drops the false rows, recomputes) and `parity.py check <dir>`.", file=sys.stderr)
     if len(perf) < 6:
         print("WARNING: under 6 top performers. Add more links, --niche words, --peers 10 or --min-ratio 1.5.", file=sys.stderr)
 
@@ -341,6 +342,11 @@ def problems_of(spec: dict) -> list[str]:
     perf = spec.get("top_performers", [])
     if len(perf) < 6:
         probs.append(f"only {len(perf)} top performers (need 6 on-niche)")
+    unreviewed = [q["id"] for q in perf if q.get("on_niche") is None]
+    if unreviewed:
+        probs.append(f"{len(unreviewed)} top performers not reviewed: set \"on_niche\" to true or false and \"on_niche_why\" "
+                     "(same kind of video as the person's target? news, macro commentary, ads, off-topic = false) in parity.json, "
+                     "then run refresh")
     if len({q["channel"] for q in perf}) < 2:
         probs.append("top performers come from a single channel (need at least 2)")
     fill = spec.get("to_fill_by_watching", {})
@@ -359,13 +365,13 @@ def cmd_refresh(a):
     drop_i = set(a.drop_id or [])
     keep, gone = [], []
     for q in spec["top_performers"]:
-        if (q.get("channel") or "").lower() in drop_c or q["id"] in drop_i:
+        if (q.get("channel") or "").lower() in drop_c or q["id"] in drop_i or q.get("on_niche") is False:
             gone.append(f"{q.get('channel')}: {q.get('title')}")
         else:
             keep.append(q)
     spec["top_performers"] = keep
-    if drop_c:
-        spec["dropped"] = sorted(set(spec.get("dropped", [])) | {c for c in a.drop_channel})
+    if gone:
+        spec["dropped"] = sorted(set(spec.get("dropped", [])) | set(gone))
     write_outputs(spec, out)
     print(f"dropped {len(gone)}, {len(keep)} top performers remain; bands, cards and PARITY.md rewritten", file=sys.stderr)
     for p_ in problems_of(spec):

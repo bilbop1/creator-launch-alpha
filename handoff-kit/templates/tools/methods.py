@@ -176,7 +176,7 @@ Refresh when: the person starts a new format, or 30 days after the date above.
 Raw data: research/methods/ (videos.csv, top.md, transcripts/) in this channel folder.
 
 ## Sources (cite as S1, S2 ...)
-At least 10 must be `read: in full` and `fits this case: yes` before this research counts as done. "Fits" means the source shows an agent workflow for the SAME input (the person's kind of footage, or nothing) AND the same output (the measured format and style). A faceless-animation tutorial does not fit a talking-head edit, and an editing tutorial does not fit a 3D animation channel. A product ad never fits.
+At least 10 must be `read: in full` and `fits this case: yes` before this research counts as done. "Fits" depends on the input. If the person gave footage: any source showing an agent (Claude, Codex or similar) editing real recorded footage (talking head, podcast, vlog, screen recording) into a finished video fits. If they gave nothing: any source showing agents generating finished videos in the same visual family (3D, 2D or motion graphics) fits. Matching the output length (Shorts or long-form) is a plus, not a requirement. A product ad, or a source for the other input type, never fits.
 {src}
 
 ## Proven techniques (shown working on screen, with a visible result)
