@@ -16,9 +16,20 @@ A test is strict only if all of these hold:
 - **Different model families.** Use judges from at least two model families when you can reach them (for example Claude plus GPT or Gemini through whatever the person already has). No family supplies more than half the judges, and the agent that made the design never judges it. If only one family is available, use at least 5 fresh agents with no shared context and report the result as "single family, weaker evidence".
 - **Fair metadata.** Our card shows the competitors' median view count and a similar age, so the numbers under the card never decide the tap.
 - **The right opponents.** Opponents are the most-viewed similar competitor videos from the research (the top performers, never low-viewed ones), shown with their real titles, thumbnails and view counts.
-- **Win bar.** A design locks only when it wins at least 60% of both-order pairs against the top competitors, beats the single best competitor card, and a majority of judge families agree.
+- **Win bar.** A design locks only when it wins at least 60% of both-order pairs against the top competitors, beats the single best competitor card, and a majority of judge families agree. "Beats the single best competitor" has a minimum sample, set out in the next section.
 
 Use `tools/feed_cards.py` (in the channel folder, or `handoff-kit/templates/tools/feed_cards.py`): `pairs` builds the both-order pair list, the judge prompts and an HTML sheet of mobile feed cards; `tally` scores the answers. Standard-library Python, no install.
+
+## Minimum sample against the best competitor
+
+This applies to every element type: premise, script, title, thumbnail, hook, each kind of shot, motion, pacing, voice, music, captions, copy and the finished cut. Two numbers decide, never one read.
+
+1. **Overall.** Ours wins 60% or more of all both-order pairs against the top competitors together. A split pair (one order won, one lost) counts half.
+2. **Best competitor.** The best competitor is the highest-viewed reference in the pool. Test against it with at least 6 both-order pairs, which is 12 reads, across two model families where you can reach them. Shuffle the order again for every read, so no judge sees a fixed pattern. Ours must win 60% or more of those reads.
+3. **The middle band.** If the best-competitor result lands between 40% and 60%, add 6 more pairs against it, once. The combined total of all pairs then decides: 60% or more wins. Below 40% on the first 6 pairs is not won, and so is a combined total under 60% after the extra 6. Do not add the extra pairs when the first 6 already decided it, and never add them a second time.
+4. **A single read never decides.** One lost read, or one won read, moves neither number on its own. A pair that splits is a half, not a loss.
+
+Report both numbers and the best-competitor record in plain words, for example "overall 11 of 14 pairs (79%); against their top video (1.2M views) we took 9 of 12 reads (75%)". If only one model family was reachable, say "single family, weaker evidence" next to the numbers. Anything short of both numbers is "has not beaten the competition yet".
 
 ## 2. Titles and thumbnails are tested as a pair
 
